@@ -10,8 +10,9 @@ import {
 import { CategoryService } from './service/category.service';
 import { CreateCategoryDto } from './dto/create.category.dto';
 import { UpdateCategoryDto } from './dto/update.category.dto';
-import { ApiOkResponse } from '@nestjs/swagger';
+import { ApiOkResponse, ApiTags } from '@nestjs/swagger';
 
+@ApiTags('category')
 @Controller('category')
 export class CategoryController {
   constructor(private readonly categoryService: CategoryService) {}
