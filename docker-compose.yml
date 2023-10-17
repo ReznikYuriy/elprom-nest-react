@@ -1,0 +1,59 @@
+version: "3"
+services:
+  postgres:
+    image: postgres:15.3
+    container_name: postgres
+    restart: "no"
+    ports:
+      - "5432:5432"
+    networks:
+      - postgres
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    env_file:
+      - .env
+
+  pgadmin:
+    image: dpage/pgadmin4:7.6
+    container_name: pgadmin
+    restart: "no"
+    networks:
+      - postgres
+    ports:
+      - "8080:80"
+    depends_on:
+      - postgres
+    volumes:
+      - ./pgadmin4/servers.json:/pgadmin4/servers.json
+    env_file:
+      - .env
+
+  redis:
+    image: redis:7-alpine
+    container_name: redis_elprom
+    restart: "always"
+    ports:
+       - 6379:6379
+  
+  nestjs-api:
+    build: ./backend
+    container_name: nestjs-api
+    restart: "always"
+    env_file:
+      - .env
+    ports:
+      - "3001:3001"
+    depends_on:
+      - postgres
+    volumes:
+      - /backend/node_modules
+      - ./backend:/api
+    networks:
+      - postgres
+
+networks:
+  postgres:
+    driver: bridge
+
+volumes:
+  postgres_data:

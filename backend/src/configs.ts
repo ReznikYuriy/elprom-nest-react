@@ -6,14 +6,13 @@ const configs =
     : { path: `.env` };
 
 dotenv.config(configs);
-
 export default {
   postgres: {
-    host: process.env.DB_HOST || 'localhost',
+    host: process.env.DB_HOST || 'postgres',
     port: Number(process.env.DB_PORT) || 5432,
     username: process.env.DB_USERNAME || 'postgres',
     password: process.env.DB_PASSWORD || 'postgres',
-    database: process.env.DB_DATABASE_NAME || 'poc_local',
+    database: process.env.DB_DATABASE_NAME || 'elprom_nest_docker',
   },
   port: process.env.PORT || 3001,
   redis: {
