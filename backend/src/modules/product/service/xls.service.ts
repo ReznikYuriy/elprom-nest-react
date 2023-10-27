@@ -98,7 +98,9 @@ export class XLSService {
   async createXlsxPricelist() {
     const categories = await this.categoryService.findAll();
     const products = await this.productService.findAllNotNullQuantity();
-
+    if (categories?.length < 1 || products?.length < 1) {
+      throw new ConflictException('Workbook is empty');
+    }
     const workbook = xlsx.utils.book_new();
     for (const category of categories) {
       const catProducts = products
