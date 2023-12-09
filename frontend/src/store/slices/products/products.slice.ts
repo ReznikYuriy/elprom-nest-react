@@ -2,7 +2,7 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 //import { productApi } from 'services';
 //import { HttpError } from 'exceptions';
 //import { IProduct } from 'common/interfaces';
-import { AppThunk } from '../types';
+import { AppThunk } from '../../types';
 import { DataStatus } from '../../enum/data-status.enum';
 import { ReducerName } from '../../enum/reducer-name.enum';
 

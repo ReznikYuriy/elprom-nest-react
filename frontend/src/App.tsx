@@ -1,26 +1,26 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import * as React from 'react';
+import { Route, Routes } from 'react-router-dom';
+import NotFound from './components/not-found/not-found';
+import Products from './components/products/products';
+import { Helmet } from 'react-helmet';
+import { RouteEnum } from './common/enums/route.enum';
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload right now.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <>
+      <Helmet>
+        <title>Electroprom - компоненты силовой электроники</title>
+        <meta name="description" content="Продажа силовых полупроводниковых приборов, охладителей, импортных и отечественных радиокомпонентов по Украине" />
+        <meta name="keywords" content="Electroprom, Электропром Украина, Электропром, Электропром Запорожье, Электропром сайт, Эл-пром, El-prom, Electroprom Украина" />
+      </Helmet>
+
+      <Routes>
+        <Route path={RouteEnum.ROOT} element={<Products />} />
+        <Route path="*" element={<NotFound />} />
+      </Routes>
+
+    </>
   );
-}
+};
 
 export default App;
