@@ -1,6 +1,6 @@
 import React from 'react';
 import { styled } from '@mui/material/styles';
-import { List, ListItem, ListItemText, Divider, Drawer, Hidden } from '@mui/material';
+import { List, ListItemText, Divider, Drawer, Hidden, ListItemButton } from '@mui/material';
 import { Link as RouterLink } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { CategoriesActionCreator } from '../../store/slices';
@@ -78,32 +78,30 @@ const Sidebar: React.FC<IProps> = ({ isOpen, onCloseSidebar }) => {
   const onSidebarClick = (listItem: string): void => {
     dispatch(CategoriesActionCreator.setActiveCategoryName(listItem));
   };
-  console.log('SIDEBAR');
 
   const drawer = (
     <Root>
       <div className={classes.toolbar}><img src={Logo} width="230px" alt="Electroprom logo" title="Electroprom" loading="lazy" /></div>
       <Divider />
       <List>
-
-        <ListItem button key="AllCategories" component={RouterLink} to={RouteEnum.CATEGORIES}
+        <ListItemButton key="AllCategories" component={RouterLink} to={RouteEnum.CATEGORIES}
           onClick={() => onSidebarClick('Все товары')}>
           <ListItemText primary="Все товары" />
-        </ListItem>
+        </ListItemButton>
         {categories.map(cat => (
-          <ListItem button key={cat.name} component={RouterLink} to={RouteEnum.CATEGORIES + cat.id}
+          <ListItemButton key={cat.name} component={RouterLink} to={RouteEnum.CATEGORIES + cat.id}
             onClick={() => onSidebarClick(cat.name)}>
             <ListItemText primary={cat.name} />
-          </ListItem>
+          </ListItemButton>
         ))}
       </List>
-    </Root>
+    </Root >
   );
-
+  //return (<div>SIDEBAR</div>)
   if (dataStatusCat === DataStatus.PENDING || !categories) {
     return <BackdropComponent />;
   }
-  return (<div>SIDEBAR</div>)
+
   return (
     <div className={classes.root}>
       <nav className={classes.drawer} aria-label="mailbox folders">

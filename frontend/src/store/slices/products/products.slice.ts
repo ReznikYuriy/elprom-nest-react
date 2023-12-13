@@ -1,13 +1,12 @@
-import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-//import { productApi } from 'services';
-//import { HttpError } from 'exceptions';
-//import { IProduct } from 'common/interfaces';
-import { AppThunk } from '../../types';
-import { DataStatus } from '../../enum/data-status.enum';
-import { ReducerName } from '../../enum/reducer-name.enum';
+import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { AppThunk } from "../../types";
+import { DataStatus } from "../../enum/data-status.enum";
+import { ReducerName } from "../../enum/reducer-name.enum";
+import { getProducts } from "../../../api/product.api";
+import { IProduct } from "../../../common/interfaces";
 
 type ProductsState = {
-  products: /* IProduct */any[];
+  products: IProduct[];
   dataStatus: DataStatus;
 };
 
@@ -20,25 +19,19 @@ const { reducer, actions } = createSlice({
   name: ReducerName.PRODUCTS,
   initialState,
   reducers: {
-    setProducts: (state, action: PayloadAction</* IProduct */any[]>) => {
+    setProducts: (state, action: PayloadAction<IProduct[]>) => {
       state.products = action.payload;
       state.dataStatus = DataStatus.SUCCESS;
     },
   },
 });
 
-const getProductsAsync = (): AppThunk => async (
-  dispatch,
-) => {
+const getProductsAsync = (): AppThunk => async (dispatch) => {
   try {
-    /* const products = await productApi.getProducts();
-    dispatch(actions.setProducts(products)); */
+    const products = await getProducts();
+    dispatch(actions.setProducts(products));
   } catch (error) {
-   /*  if (error instanceof HttpError) {
-      return notificationService.error(`Error ${error.status}`, error.messages);
-    }
-    throw error; */
-    console.log(error);
+    throw error;
   }
 };
 

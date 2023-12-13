@@ -1,14 +1,9 @@
-import { Action, /* AnyAction, */ createSlice, PayloadAction,/*  ThunkAction  */} from "@reduxjs/toolkit";
-//import { categoryApi } from "services";
-//import { ReducerName, DataStatus } from "common/enums";
-//import { ICategory } from "common/interfaces";
-import { AppThunk, RootState } from "../../types";
+import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { AppThunk } from "../../types";
 import { ReducerName } from "../../enum/reducer-name.enum";
 import { DataStatus } from "../../enum/data-status.enum";
-import { getCategories } from "../../../api/categories";
-import { categoryApi } from "../../../services";
+import { getCategories } from "../../../api/category.api";
 import { ICategory } from "../../../common/interfaces";
-
 
 type CategoriesState = {
   categories: ICategory[];
@@ -36,9 +31,9 @@ const { reducer, actions } = createSlice({
   },
 });
 
-const getCategoriesAsync = ():AppThunk => async (dispatch) => {
+const getCategoriesAsync = (): AppThunk => async (dispatch) => {
   try {
-    const categories = await categoryApi.getCategories(); 
+    const categories = await getCategories();
     dispatch(actions.setCategories(categories));
   } catch (error) {
     throw error;

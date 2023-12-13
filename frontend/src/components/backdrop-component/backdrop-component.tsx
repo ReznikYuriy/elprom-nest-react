@@ -25,7 +25,7 @@ const BackdropComponent: React.FC = () => {
 
   return (
     <Root>
-      <Backdrop className={classes.backdrop} open={true} >
+      <Backdrop className={classes.backdrop} open={true}>
         <CircularProgress color="inherit" />
       </Backdrop>
     </Root>

@@ -1,6 +1,6 @@
 import React from 'react';
 import MaterialTable from 'material-react-table';
-import { ICategory, IProduct } from '../../common/interfaces';
+import { ICategory, IProduct } from '../../../common/interfaces';
 import { Link, useParams } from 'react-router-dom';
 import { productsToTableData } from './helpers/helper';
 import { useSelector } from 'react-redux';
@@ -8,10 +8,10 @@ import { localization } from './helpers/localization';
 import { IconButton, Tooltip } from '@mui/material';
 import InfoIcon from '@mui/icons-material/Info';
 import { Helmet } from 'react-helmet';
-import BackdropComponent from '../backdrop-component/backdrop-component';
-import { getCurrentCategoryById } from '../../common/helpers/get.current.category';
-import { RootState } from '../../store/types';
-import { RouteEnum } from '../../common/enums/route.enum';
+import BackdropComponent from '../../backdrop-component/backdrop-component';
+import { getCurrentCategoryById } from '../../../common/helpers/get.current.category';
+import { RootState } from '../../../store/types';
+import { RouteEnum } from '../../../common/enums/route.enum';
 import { useMemo } from 'react';
 import {
   MRT_Table, //import alternative sub-component if we do not want toolbars

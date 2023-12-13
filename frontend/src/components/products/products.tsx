@@ -2,14 +2,14 @@ import React from 'react';
 import { styled } from '@mui/material/styles';
 import { AppBar, BottomNavigation, BottomNavigationAction, CssBaseline, Hidden, Tooltip } from '@mui/material';
 import { Toolbar, Button } from '@mui/material';
-import { Link as RouterLink, BrowserRouter, Route, Routes } from 'react-router-dom';
+import { Link as RouterLink, BrowserRouter } from 'react-router-dom';
 import { DataStatus } from '../../store/enum';
 import Purchases from '../pages/purchases';
 import Delivery from '../pages/delivery';
 import Contacts from '../pages/contacts';
 import MainPage from '../pages/main-page';
-import { MatTable } from '../product-table/material-table';
-import ProductDetail from '../product-details/product-detail';
+import { MatTable } from './product-table/material-table';
+import ProductDetail from './product-details/product-detail';
 import HomeIcon from '@mui/icons-material/Home';
 import LocalShippingIcon from '@mui/icons-material/LocalShipping';
 import AttachMoneyIcon from '@mui/icons-material/AttachMoney';
@@ -25,27 +25,24 @@ import NotFound from '../not-found/not-found';
 import { RootState } from '../../store/types';
 import { RouteEnum } from '../../common/enums/route.enum';
 
-const PREFIX = 'Products';
-
 const classes = {
-  root: `${PREFIX}-root`,
-  stickToBottom: `${PREFIX}-stickToBottom`,
-  appBar: `${PREFIX}-appBar`,
-  menuButton: `${PREFIX}-menuButton`,
-  toolbarIcon: `${PREFIX}-toolbarIcon`,
-  toolbar: `${PREFIX}-toolbar`,
-  drawerPaper: `${PREFIX}-drawerPaper`,
-  content: `${PREFIX}-content`
+  stickToBottom: 'stickToBottom',
+  appBar: 'appBar',
+  menuButton: 'menuButton',
+  toolbarIcon: 'toolbarIcon',
+  toolbar: 'toolbar',
+  drawerPaper: 'drawerPaper',
+  content: 'content'
 };
+const drawerWidth = 240;
 
-const StyledRouter = styled(BrowserRouter)((
+const Root = styled('div')((
   {
     theme
   }
 ) => ({
-  [`& .${classes.root}`]: {
-    display: 'flex',
-  },
+
+  display: 'flex',
 
   [`& .${classes.stickToBottom}`]: {
     width: '100%',
@@ -60,6 +57,7 @@ const StyledRouter = styled(BrowserRouter)((
     },
     backgroundColor: '#4b4c4c',
     color: '#FF9100',
+    position: 'fixed'
   },
   [`& .${classes.menuButton}`]: {
     marginRight: theme.spacing(2),
@@ -89,7 +87,7 @@ const StyledRouter = styled(BrowserRouter)((
   }
 }));
 
-const drawerWidth = 240;
+
 
 const Products: React.FC = () => {
 
@@ -111,72 +109,65 @@ const Products: React.FC = () => {
     setMobileOpen(!mobileOpen);
   };
 
+
   if (dataStatusProd === DataStatus.PENDING || !products) {
     return <BackdropComponent />;
   }
+  //return (<Sidebar isOpen={mobileOpen} onCloseSidebar={() => handleDrawerToggle()} />);
 
   return (
-    <StyledRouter>
-      <div className={classes.root}>
-        <CssBaseline />
 
-        <AppBar position="fixed" className={classes.appBar}>
-          <Toolbar>
-            <IconButton
-              color="inherit"
-              aria-label="open drawer"
-              edge="start"
-              onClick={handleDrawerToggle}
-              className={classes.menuButton}
-              size="large">
-              <MenuIcon />
+    <Root>
+      <CssBaseline />
+
+      <AppBar className={classes.appBar}>
+
+        <Toolbar>
+          <IconButton
+            color="inherit"
+            aria-label="open drawer"
+            edge="start"
+            onClick={handleDrawerToggle}
+            className={classes.menuButton}
+            size="large">
+            <MenuIcon />
+          </IconButton>
+          <Hidden mdDown implementation="css">
+            <IconButton color="inherit" component={RouterLink} to={RouteEnum.ROOT} size="large">
+              <Tooltip title="Главная страница" enterDelay={500} leaveDelay={200}>
+                <HomeIcon />
+              </Tooltip>
             </IconButton>
-            <Hidden mdDown implementation="css">
-              <IconButton color="inherit" component={RouterLink} to={RouteEnum.ROOT} size="large">
-                <Tooltip title="Главная страница" enterDelay={500} leaveDelay={200}>
-                  <HomeIcon />
-                </Tooltip>
-              </IconButton>
-              <Button color="inherit" component={RouterLink} to={RouteEnum.DELIVERY}>ОПЛАТА И ДОСТАВКА</Button>
-              <Button color="inherit" component={RouterLink} to={RouteEnum.PURCHASES}>ЗАКУПАЕМ</Button>
-              <Button color="inherit" component={RouterLink} to={RouteEnum.CONTACTS}>КОНТАКТЫ</Button>
-              <IconButton color="inherit" href="/price.zip" download size="large">
-                <Tooltip title="Скачать прайс" enterDelay={500} leaveDelay={200}>
-                  <GetAppIcon />
-                </Tooltip>
-              </IconButton>
-            </Hidden>
-          </Toolbar>
-        </AppBar>
-        <Hidden smUp implementation="css">
-          <BottomNavigation
-            className={classes.stickToBottom}
-            showLabels
-          >
-            <BottomNavigationAction label="Home" icon={<HomeIcon />} component={RouterLink} to={RouteEnum.ROOT} />
-            <BottomNavigationAction label="Доставка" icon={<LocalShippingIcon />} component={RouterLink} to={RouteEnum.DELIVERY} />
-            <BottomNavigationAction label="Закупаем" icon={<AttachMoneyIcon />} component={RouterLink} to={RouteEnum.PURCHASES} />
-            <BottomNavigationAction label="Контакты" icon={<PhoneIcon />} component={RouterLink} to={RouteEnum.CONTACTS} />
-          </BottomNavigation>
-        </Hidden>
-        <Sidebar isOpen={mobileOpen} onCloseSidebar={() => handleDrawerToggle()} />
+            <Button color="inherit" component={RouterLink} to={RouteEnum.DELIVERY}>ОПЛАТА И ДОСТАВКА</Button>
+            <Button color="inherit" component={RouterLink} to={RouteEnum.PURCHASES}>ЗАКУПАЕМ</Button>
+            <Button color="inherit" component={RouterLink} to={RouteEnum.CONTACTS}>КОНТАКТЫ</Button>
+            <IconButton color="inherit" href="/price.zip" download size="large">
+              <Tooltip title="Скачать прайс" enterDelay={500} leaveDelay={200}>
+                <GetAppIcon />
+              </Tooltip>
+            </IconButton>
+          </Hidden>
+        </Toolbar>
 
-        <main className={classes.content}>
-          <div className={classes.toolbar} />
-          <Routes>
-            <Route path={RouteEnum.ROOT} element={<MainPage />} />
-            <Route path={RouteEnum.CATEGORIES} element={<MatTable products={products} />} />
-            <Route path={RouteEnum.CATEGORIES_$ID} element={<MatTable products={products} />} />
-            <Route path={RouteEnum.PRODUCT_DETAILS_$ID} element={<ProductDetail />} />
-            <Route path={RouteEnum.PURCHASES} element={<Purchases />} />
-            <Route path={RouteEnum.DELIVERY} element={<Delivery />} />
-            <Route path={RouteEnum.CONTACTS} element={<Contacts />} />
-            {/* // <Route path={AppRoute.ADMIN} component={Dashboard} /> */}
-            <Route path="*" element={<NotFound />} />
-          </Routes>
-        </main>
-      </div>
-    </StyledRouter>
+      </AppBar>
+      <Hidden smUp implementation="css">
+        <BottomNavigation
+          className={classes.stickToBottom}
+          showLabels
+        >
+          <BottomNavigationAction label="Home" icon={<HomeIcon />} component={RouterLink} to={RouteEnum.ROOT} />
+          <BottomNavigationAction label="Доставка" icon={<LocalShippingIcon />} component={RouterLink} to={RouteEnum.DELIVERY} />
+          <BottomNavigationAction label="Закупаем" icon={<AttachMoneyIcon />} component={RouterLink} to={RouteEnum.PURCHASES} />
+          <BottomNavigationAction label="Контакты" icon={<PhoneIcon />} component={RouterLink} to={RouteEnum.CONTACTS} />
+        </BottomNavigation>
+      </Hidden>
+      <Sidebar isOpen={mobileOpen} onCloseSidebar={() => handleDrawerToggle()} />
+
+      <main className={classes.content}>
+        <div className={classes.toolbar} />
+      </main>
+    </Root >
+
   );
 };
 export default Products;

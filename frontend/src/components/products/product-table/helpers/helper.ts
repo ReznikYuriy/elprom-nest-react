@@ -1,4 +1,4 @@
-import { IProduct } from '../../../common/interfaces/product.interface';
+import { IProduct } from '../../../../common/interfaces/product.interface';
 
 export const productsToTableData = (products: IProduct[], id: string | undefined): Partial<IProduct>[] => {
   const arrayToPartialArray = (array: IProduct[]): Partial<IProduct>[] => {

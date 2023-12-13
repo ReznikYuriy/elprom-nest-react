@@ -5,10 +5,10 @@ import Typography from '@mui/material/Typography';
 import { useNavigate, useParams } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import { getCurrentProductById } from './helpers/helper';
-import BackdropComponent from '../backdrop-component/backdrop-component';
+import BackdropComponent from '../../backdrop-component/backdrop-component';
 import { Helmet } from 'react-helmet';
-import { getCurrentCategoryById } from '../../common/helpers/get.current.category';
-import { RootState } from '../../store/types';
+import { getCurrentCategoryById } from '../../../common/helpers/get.current.category';
+import { RootState } from '../../../store/types';
 
 const PREFIX = 'ProductDetail';
 
