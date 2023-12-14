@@ -1,6 +1,6 @@
 enum ReducerName {
-  CATEGORIES = 'categories',
-  PRODUCTS= 'products',
+  CATEGORIES = 'categoryReducer',
+  PRODUCTS= 'productReducer',
 }
 
 export { ReducerName };

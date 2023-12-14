@@ -1,6 +1,5 @@
 export enum RouteEnum {
   ROOT = "/",
-  STORE = "/store",
   SIGN_IN = "/sign-in",
   SIGN_UP = "/sign-up",
   NOT_FOUND = "/not-found",

@@ -86,31 +86,27 @@ const Root = styled('div')((
 const ProductDetail: React.FC = () => {
 
 
-  const { products } = useSelector(
-    ({ products }: RootState) => ({
-      products: products.products,
-    }),
+  const products  = useSelector(
+    (state: RootState) => (state.productReducer.products),
   );
-  const { categories } = useSelector(
-    ({ categories }: RootState) => ({
-      categories: categories.categories,
-    }),
+  const categories = useSelector(
+    (state: RootState) => (state.categoryReducer.categories),
   );
   const { id } = useParams<{ id: string }>();
 
   const selectedProduct = getCurrentProductById(products, id||'');
-  const selectedCategory = getCurrentCategoryById(categories, selectedProduct!.categoryid);
+  const selectedCategory = getCurrentCategoryById(categories, selectedProduct!.category_id);
   const navigate = useNavigate();
 
   if (!selectedProduct || !selectedCategory) return <BackdropComponent />;
 
   return (
     <Root>
-      <Helmet>
+      {/* <Helmet>
         <title>{selectedProduct.name} Electroprom</title>
         <meta name="description" content={`Страница товара ${selectedProduct.name} Electroprom`} />
-        <meta name="keywords" content={`${selectedProduct.name}, купить ${selectedProduct.name}, ${selectedProduct.name} цена, ${selectedProduct.name} Украина, ${selectedCategory.name} Украина,`} />
-      </Helmet>
+        <meta name="keywords" content={`${selectedProduct.name}, купить ${selectedProduct.name}, ${selectedProduct.name} цена, ${selectedProduct.name} Украина, ${selectedCategory} Украина,`} />
+      </Helmet> */}
       <Card className={classes.root}>
         <CardHeader
           className={classes.header}

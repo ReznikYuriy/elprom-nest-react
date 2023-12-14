@@ -5,11 +5,11 @@ import { Helmet } from 'react-helmet';
 function App() {
   return (
     <>
-      <Helmet>
+      {/* <Helmet>
         <title>Electroprom - компоненты силовой электроники</title>
         <meta name="description" content="Продажа силовых полупроводниковых приборов, охладителей, импортных и отечественных радиокомпонентов по Украине" />
         <meta name="keywords" content="Electroprom, Электропром Украина, Электропром, Электропром Запорожье, Электропром сайт, Эл-пром, El-prom, Electroprom Украина" />
-      </Helmet>
+      </Helmet> */}
 
       <Products/>
 

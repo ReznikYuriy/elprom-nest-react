@@ -1,9 +1,9 @@
 interface IProduct {
   id: string
-  productid1c: number
+  product_id_1c: number
   name: string
   tags?: string
-  categoryid: string
+  category_id: string
   imagepath?: string
   description: string
   price: number

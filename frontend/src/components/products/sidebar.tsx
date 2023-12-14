@@ -60,11 +60,11 @@ const drawerWidth = 240;
 const Sidebar: React.FC<IProps> = ({ isOpen, onCloseSidebar }) => {
 
 
-  const { categories, dataStatusCat } = useSelector(
-    ({ categories }: RootState) => ({
-      categories: categories.categories,
-      dataStatusCat: categories.dataStatus,
-    }),
+  const categories = useSelector(
+    (state: RootState) => (state.categoryReducer.categories),
+  );
+  const dataStatusCat  = useSelector(
+    (state: RootState) => (state.categoryReducer.dataStatus),
   );
 
   const dispatch = useDispatch();
@@ -87,8 +87,8 @@ const Sidebar: React.FC<IProps> = ({ isOpen, onCloseSidebar }) => {
           <ListItemText primary="Все товары" />
         </ListItemButton>
         {categories.map(cat => (
-          <ListItemButton key={cat.name} component={RouterLink} to={RouteEnum.CATEGORIES + cat.id}
-            onClick={() => onSidebarClick(cat.name)}>
+          <ListItemButton key={cat.id} component={RouterLink} to={RouteEnum.CATEGORIES + cat.id}
+            onClick={() => onSidebarClick(cat.id)}>
             <ListItemText primary={cat.name} />
           </ListItemButton>
         ))}

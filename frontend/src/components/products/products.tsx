@@ -8,7 +8,7 @@ import Purchases from '../pages/purchases';
 import Delivery from '../pages/delivery';
 import Contacts from '../pages/contacts';
 import MainPage from '../pages/main-page';
-import { MatTable } from './product-table/material-table';
+import MatTable from './product-table/react.material.table';
 import ProductDetail from './product-details/product-detail';
 import HomeIcon from '@mui/icons-material/Home';
 import LocalShippingIcon from '@mui/icons-material/LocalShipping';
@@ -24,7 +24,6 @@ import BackdropComponent from '../backdrop-component/backdrop-component';
 import NotFound from '../not-found/not-found';
 import { RootState } from '../../store/types';
 import { RouteEnum } from '../../common/enums/route.enum';
-import Example from './product-table/react.material.table';
 
 const classes = {
   stickToBottom: 'stickToBottom',
@@ -96,17 +95,18 @@ const Root = styled('div')((
 
 const Products: React.FC = () => {
 
-  const { products, dataStatusProd } = useSelector(
-    ({ products }: RootState) => ({
-      products: products.products,
-      dataStatusProd: products.dataStatus,
-    }),
+  const products = useSelector(
+    (state: RootState) => (state.productReducer.products),
+  );
+  const dataStatusProd = useSelector(
+    (state: RootState) => (state.productReducer.dataStatus),
   );
   const dispatch = useDispatch();
 
   React.useEffect(() => {
+    console.log('PRODUCTS USE EFFECT');
     dispatch<any>(ProductsActionCreator.getProductsAsync());
-  }, [dispatch]);
+  },[dispatch]);
 
   const [mobileOpen, setMobileOpen] = React.useState(false);
 
@@ -172,10 +172,8 @@ const Products: React.FC = () => {
           <div className={classes.toolbar} />
           <Routes>
             <Route path={RouteEnum.ROOT} element={<MainPage />} />
-            {/* <Route path={RouteEnum.CATEGORIES} element={<MatTable products={products} />} />
-        <Route path={RouteEnum.CATEGORIES_$ID} element={<MatTable products={products} />} /> */}
-            <Route path={RouteEnum.CATEGORIES} element={<Example />} />
-            <Route path={RouteEnum.CATEGORIES_$ID} element={<Example />} />
+            <Route path={RouteEnum.CATEGORIES} element={<MatTable products={products} />} />
+            <Route path={RouteEnum.CATEGORIES_$ID} element={<MatTable products={products} />} />
             <Route path={RouteEnum.PRODUCT_DETAILS_$ID} element={<ProductDetail />} />
             <Route path={RouteEnum.PURCHASES} element={<Purchases />} />
             <Route path={RouteEnum.DELIVERY} element={<Delivery />} />
