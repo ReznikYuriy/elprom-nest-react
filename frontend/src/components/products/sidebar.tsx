@@ -10,14 +10,12 @@ import { RouteEnum } from '../../common/enums/route.enum';
 import { DataStatus } from '../../store/enum/data-status.enum';
 import { RootState } from '../../store/types';
 
-const PREFIX = 'Sidebar';
-
 const classes = {
-  root: `${PREFIX}-root`,
-  drawer: `${PREFIX}-drawer`,
-  toolbarIcon: `${PREFIX}-toolbarIcon`,
-  toolbar: `${PREFIX}-toolbar`,
-  drawerPaper: `${PREFIX}-drawerPaper`
+  root: 'root',
+  drawer: 'drawer',
+  toolbarIcon: 'toolbarIcon',
+  toolbar: 'toolbar',
+  drawerPaper: 'drawerPaper'
 };
 
 const Root = styled('div')((
@@ -97,7 +95,6 @@ const Sidebar: React.FC<IProps> = ({ isOpen, onCloseSidebar }) => {
       </List>
     </Root >
   );
-  //return (<div>SIDEBAR</div>)
   if (dataStatusCat === DataStatus.PENDING || !categories) {
     return <BackdropComponent />;
   }

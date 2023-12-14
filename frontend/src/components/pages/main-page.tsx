@@ -6,11 +6,9 @@ import CardContent from '@mui/material/CardContent';
 import Typography from '@mui/material/Typography';
 import MainImg from '../../assets/images/main.jpg';
 
-const PREFIX = 'MainPage';
-
 const classes = {
-  root: `${PREFIX}-root`,
-  media: `${PREFIX}-media`
+  root: 'root',
+  media: 'media'
 };
 
 const StyledCard = styled(Card)((

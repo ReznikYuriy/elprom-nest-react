@@ -3,12 +3,10 @@ import { styled } from '@mui/material/styles';
 import { Alert } from '@mui/material';
 import { Helmet } from 'react-helmet';
 
-const PREFIX = 'Delivery';
-
 const classes = {
-  root: `${PREFIX}-root`,
-  ul: `${PREFIX}-ul`,
-  alert: `${PREFIX}-alert`
+  root: `root`,
+  ul: `ul`,
+  alert: `alert`
 };
 
 const Root = styled('div')({
@@ -51,7 +49,6 @@ const Delivery: React.FC = () => {
       </Alert>
       <ul className={classes.ul}>
         <li><a href="https://novaposhta.ua/"><strong>Новая Почта</strong></a></li>
-        <li><a href="https://www.delivery-auto.com/"><strong>Деливери</strong></a></li>
         <li><a href="https://www.ukrposhta.ua/ua"><strong>Укрпочта</strong></a></li>
       </ul>
       <Alert severity="success" className={classes.alert}>

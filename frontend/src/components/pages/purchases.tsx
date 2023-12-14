@@ -3,12 +3,10 @@ import { Alert } from '@mui/material';
 import * as React from 'react';
 import { Helmet } from 'react-helmet';
 
-const PREFIX = 'Purchases';
-
 const classes = {
-  ul: `${PREFIX}-ul`,
-  p: `${PREFIX}-p`,
-  alert: `${PREFIX}-alert`
+  ul: 'ul',
+  p: 'p',
+  alert: 'alert'
 };
 
 const Root = styled('div')({
