@@ -15,11 +15,9 @@ export const productsToTableData = (
       };
     });
   };
-  if (id && id !== undefined) {
+  if (id) {
     const filtered_products = products.filter((prod) => prod.category_id === id);
-    console.log(arrayToPartialArray(filtered_products));
     return arrayToPartialArray(filtered_products);
   }
-  console.log(arrayToPartialArray(products));
   return arrayToPartialArray(products);
 };

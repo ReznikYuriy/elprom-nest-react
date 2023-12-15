@@ -24,6 +24,7 @@ import BackdropComponent from '../backdrop-component/backdrop-component';
 import NotFound from '../not-found/not-found';
 import { RootState } from '../../store/types';
 import { RouteEnum } from '../../common/enums/route.enum';
+import { metaAdder } from '../../common/helpers/meta.adder';
 
 const classes = {
   stickToBottom: 'stickToBottom',
@@ -104,9 +105,12 @@ const Products: React.FC = () => {
   const dispatch = useDispatch();
 
   React.useEffect(() => {
+    document.title = "Electroprom - компоненты силовой электроники";
+    metaAdder(`name="description"`, "Продажа силовых полупроводниковых приборов, охладителей, импортных и отечественных радиокомпонентов по Украине");
+    metaAdder(`name="keywords"`, "Electroprom, Электропром Украина, Электропром, Электропром Запорожье, Электропром сайт, Эл-пром, El-prom, Electroprom Украина");
     console.log('PRODUCTS USE EFFECT');
     dispatch<any>(ProductsActionCreator.getProductsAsync());
-  },[dispatch]);
+  }, [dispatch]);
 
   const [mobileOpen, setMobileOpen] = React.useState(false);
 
@@ -124,9 +128,7 @@ const Products: React.FC = () => {
     <Root>
       <BrowserRouter>
         <CssBaseline />
-
         <AppBar className={classes.appBar}>
-
           <Toolbar>
             <IconButton
               color="inherit"
@@ -153,13 +155,9 @@ const Products: React.FC = () => {
               </IconButton>
             </Hidden>
           </Toolbar>
-
         </AppBar>
         <Hidden smUp implementation="css">
-          <BottomNavigation
-            className={classes.stickToBottom}
-            showLabels
-          >
+          <BottomNavigation className={classes.stickToBottom} showLabels>
             <BottomNavigationAction label="Home" icon={<HomeIcon />} component={RouterLink} to={RouteEnum.ROOT} />
             <BottomNavigationAction label="Доставка" icon={<LocalShippingIcon />} component={RouterLink} to={RouteEnum.DELIVERY} />
             <BottomNavigationAction label="Закупаем" icon={<AttachMoneyIcon />} component={RouterLink} to={RouteEnum.PURCHASES} />
@@ -183,7 +181,6 @@ const Products: React.FC = () => {
         </main>
       </BrowserRouter>
     </Root >
-
   );
 };
 export default Products;

@@ -6,7 +6,6 @@ import { useNavigate, useParams } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import { getCurrentProductById } from './helpers/helper';
 import BackdropComponent from '../../backdrop-component/backdrop-component';
-import { Helmet } from 'react-helmet';
 import { getCurrentCategoryById } from '../../../common/helpers/get.current.category';
 import { RootState } from '../../../store/types';
 
@@ -22,7 +21,6 @@ const classes = {
   backButton: `${PREFIX}-backButton`
 };
 
-// TODO jss-to-styled codemod: The Fragment root was replaced by div. Change the tag if needed.
 const Root = styled('div')((
   {
     theme
@@ -84,29 +82,20 @@ const Root = styled('div')((
 }));
 
 const ProductDetail: React.FC = () => {
-
-
+  const { id } = useParams<{ id: string }>();
   const products  = useSelector(
     (state: RootState) => (state.productReducer.products),
   );
   const categories = useSelector(
     (state: RootState) => (state.categoryReducer.categories),
   );
-  const { id } = useParams<{ id: string }>();
-
+  const navigate = useNavigate();
   const selectedProduct = getCurrentProductById(products, id||'');
   const selectedCategory = getCurrentCategoryById(categories, selectedProduct!.category_id);
-  const navigate = useNavigate();
-
   if (!selectedProduct || !selectedCategory) return <BackdropComponent />;
-
+  
   return (
     <Root>
-      {/* <Helmet>
-        <title>{selectedProduct.name} Electroprom</title>
-        <meta name="description" content={`Страница товара ${selectedProduct.name} Electroprom`} />
-        <meta name="keywords" content={`${selectedProduct.name}, купить ${selectedProduct.name}, ${selectedProduct.name} цена, ${selectedProduct.name} Украина, ${selectedCategory} Украина,`} />
-      </Helmet> */}
       <Card className={classes.root}>
         <CardHeader
           className={classes.header}
