@@ -26,8 +26,25 @@ export default class ProductRepository {
     });
   }
 
+  async findAllByCategoryId(category_id: string): Promise<ProductModel[]> {
+    return this.productSchema.findAll({
+      where: { quantity: { [Op.ne]: 0 }, category_id },
+    });
+  }
+
   async findById(id: string): Promise<ProductModel> {
     return this.productSchema.findByPk(id);
+  }
+
+  async findAllByName(name: string): Promise<ProductModel[]> {
+    return this.productSchema.findAll({
+      where: {
+        quantity: { [Op.ne]: 0 },
+        name: {
+          [Op.iLike]: `%${name}%`,
+        },
+      },
+    });
   }
 
   async findById1C(id: string): Promise<ProductModel> {

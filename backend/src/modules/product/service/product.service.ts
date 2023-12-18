@@ -31,6 +31,10 @@ export class ProductService {
     return this.productRepo.findById(id);
   }
 
+  async findAllByCategoryId(category_id: string) {
+    return this.productRepo.findAllByCategoryId(category_id);
+  }
+
   async update(id: string, dto: UpdateProductDto) {
     return this.productRepo.update(id, dto);
   }
@@ -41,6 +45,10 @@ export class ProductService {
 
   async getById1c(id: string) {
     return this.productRepo.findById1C(id);
+  }
+
+  async productSearch(name: string) {
+    return this.productRepo.findAllByName(name);
   }
 
   public compareProducts(

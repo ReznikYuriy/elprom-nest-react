@@ -15,6 +15,10 @@ export class CategoryService {
     return this.categoryRepo.findAll();
   }
 
+  async findAllNonZeroBalances() {
+    return this.categoryRepo.findAllNonZeroBalances();
+  }
+
   async findOne(id: string) {
     return this.categoryRepo.findById(id);
   }

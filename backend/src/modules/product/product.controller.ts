@@ -10,6 +10,7 @@ import {
   UploadedFile,
   Header,
   StreamableFile,
+  Query,
 } from '@nestjs/common';
 import { ProductService } from './service/product.service';
 import { CreateProductDto } from './dto/create.product.dto';
@@ -17,6 +18,7 @@ import { UpdateProductDto } from './dto/update.product.dto';
 import { ApiBody, ApiConsumes, ApiOkResponse, ApiTags } from '@nestjs/swagger';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { XLSService } from './service/xls.service';
+import { SearchQueryDto } from './dto/search.query.dto';
 
 @ApiTags('product')
 @Controller('product')
@@ -43,9 +45,22 @@ export class ProductController {
     return this.productService.findAll();
   }
 
-  @Get(':id')
+  @Get(':id/product')
   async findOne(@Param('id') id: string) {
     return this.productService.findOne(id);
+  }
+
+  @Get(':category_id/category')
+  async findOneByCategoryId(@Param('category_id') category_id: string) {
+    return this.productService.findAllByCategoryId(category_id);
+  }
+
+  @ApiOkResponse({
+    type: Array,
+  })
+  @Get('search')
+  async productsSearch(@Query() query: SearchQueryDto) {
+    return await this.productService.productSearch(query.name);
   }
 
   @Patch(':id')
