@@ -74,7 +74,7 @@ const Sidebar: React.FC<IProps> = ({ isOpen, onCloseSidebar }) => {
   }, [dispatch]);
 
   const onSidebarClick = (listItem: string): void => {
-    dispatch<any>(ProductsActionCreator.setActiveCategoryNameAsync(listItem));
+    dispatch<any>(ProductsActionCreator.setActiveCategoryAsync(listItem));
   };
 
   const drawer = (

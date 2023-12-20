@@ -53,8 +53,8 @@ const SearchComponent: React.FC = () => {
     const [searchText, setSearchText] = useState("")
     const [timerId, setTimerId] = useState<any>(0);
     const dispatch = useDispatch();
-    const activeCategoryName = useSelector(
-        (state: RootState) => (state.productReducer.activeCategoryName),
+    const activeCategory = useSelector(
+        (state: RootState) => (state.productReducer.activeCategory),
     );
 
     function handleQueryChange(event: React.ChangeEvent<HTMLInputElement>) {
@@ -70,8 +70,8 @@ const SearchComponent: React.FC = () => {
     }
 
     useEffect(() => {
-        setSearchText("")
-    }, [activeCategoryName])
+        setSearchText("");
+    }, [activeCategory])
 
     return (
         <Search>

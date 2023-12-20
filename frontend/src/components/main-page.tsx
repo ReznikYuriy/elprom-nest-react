@@ -4,7 +4,7 @@ import Card from '@mui/material/Card';
 import CardMedia from '@mui/material/CardMedia';
 import CardContent from '@mui/material/CardContent';
 import Typography from '@mui/material/Typography';
-import MainImg from '../../assets/images/main.jpg';
+import MainImg from '../assets/images/main.jpg';
 
 const classes = {
   root: 'root',

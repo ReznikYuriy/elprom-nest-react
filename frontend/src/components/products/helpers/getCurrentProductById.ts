@@ -1,4 +1,4 @@
-import { IProduct } from "../../../../common/interfaces";
+import { IProduct } from "../../../common/interfaces";
 
 export const getCurrentProductById = (
   products: IProduct[],

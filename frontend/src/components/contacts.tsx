@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { styled } from '@mui/material/styles';
-import viberIcon from '../../assets/images/viber-icon.svg';
+import viberIcon from '../assets/images/viber-icon.svg';
 import { Alert } from '@mui/material';
 import { Helmet } from 'react-helmet';
 

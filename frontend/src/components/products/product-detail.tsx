@@ -4,10 +4,10 @@ import { Card, CardHeader, CardContent, IconButton, SvgIcon } from '@mui/materia
 import Typography from '@mui/material/Typography';
 import { useNavigate, useParams } from 'react-router-dom';
 import { useSelector } from 'react-redux';
-import { getCurrentProductById } from './helpers/helper';
-import BackdropComponent from '../../backdrop-component/backdrop-component';
-import { getCurrentCategoryById } from '../../../common/helpers/get.current.category';
-import { RootState } from '../../../store/types';
+import { getCurrentProductById } from './helpers/getCurrentProductById';
+import BackdropComponent from '../backdrop-component/backdrop-component';
+import { getCurrentCategoryById } from '../../common/helpers/get.current.category';
+import { RootState } from '../../store/types';
 
 const PREFIX = 'ProductDetail';
 

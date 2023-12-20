@@ -9,17 +9,19 @@ import {
 import { IProduct } from "../../../common/interfaces";
 import { getCategoryById } from "../../../api/category.api";
 
+type CategoryType = { id: string; name: string };
+
 type ProductsState = {
   products: IProduct[];
   dataStatus: DataStatus;
-  activeCategoryName: string;
+  activeCategory: CategoryType;
   searchInputText: string;
 };
 
 const initialState: ProductsState = {
   products: [],
   dataStatus: DataStatus.PENDING,
-  activeCategoryName: "",
+  activeCategory: { id: "", name: "" },
   searchInputText: "поиск по складу",
 };
 
@@ -31,8 +33,8 @@ const { reducer, actions } = createSlice({
       state.products = action.payload;
       state.dataStatus = DataStatus.SUCCESS;
     },
-    setActiveCategory: (state, action: PayloadAction<string>) => {
-      state.activeCategoryName = action.payload;
+    setActiveCategory: (state, action: PayloadAction<CategoryType>) => {
+      state.activeCategory = action.payload;
     },
     setSearchInputText: (state, action: PayloadAction<string>) => {
       state.searchInputText = action.payload;
@@ -53,24 +55,37 @@ const getProductsAsync =
 
 const getProductsBySearchAsync =
   (name: string): AppThunk =>
-  async (dispatch) => {
+  async (dispatch, getState) => {
     try {
-      const products = await getProductsBySearch(name);
+      const state = getState();
+      let products: IProduct[];
+      if (name === "") {
+        products = await getProductsByCategoryId(
+          state.productReducer.activeCategory.id
+        );
+      } else {
+        products = await getProductsBySearch(name);
+      }
+
       dispatch(actions.setProducts(products));
       dispatch(actions.setSearchInputText(name));
-      dispatch(actions.setActiveCategory("Результаты поиска:"));
     } catch (error) {
       throw error;
     }
   };
 
-const setActiveCategoryNameAsync =
+const setActiveCategoryAsync =
   (id: string): AppThunk =>
   async (dispatch) => {
     try {
       const category = await getCategoryById(id);
-      dispatch(actions.setActiveCategory(category?.name || ""));
-      dispatch(actions.setSearchInputText(''));
+      dispatch(
+        actions.setActiveCategory({
+          id: category?.id || "",
+          name: category?.name || "",
+        })
+      );
+      dispatch(actions.setSearchInputText(""));
     } catch (error) {
       throw error;
     }
@@ -80,7 +95,7 @@ const ProductsActionCreator = {
   ...actions,
   getProductsAsync,
   getProductsBySearchAsync,
-  setActiveCategoryNameAsync,
+  setActiveCategoryAsync,
 };
 
 export { ProductsActionCreator, reducer };

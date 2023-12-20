@@ -1,17 +1,17 @@
 import React from 'react';
 import { useParams } from 'react-router-dom';
-import { productsToTableData } from './helpers/helper';
-import { RootState } from '../../../store/types';
+import { productsToTableData } from './helpers/formatProductsToTableData';
+import { RootState } from '../../store/types';
 import { useDispatch, useSelector } from 'react-redux';
-import { ProductsActionCreator } from '../../../store/slices';
-import { DataStatus } from '../../../store/enum';
-import BackdropComponent from '../../backdrop-component/backdrop-component';
+import { ProductsActionCreator } from '../../store/slices';
+import { DataStatus } from '../../store/enum';
+import BackdropComponent from '../backdrop-component/backdrop-component';
 import { Stack } from '@mui/system';
 import { IconButton, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TablePagination, TableRow, Tooltip, Typography } from '@mui/material';
 import { Link as RouterLink } from 'react-router-dom';
-import { RouteEnum } from '../../../common/enums';
+import { RouteEnum } from '../../common/enums';
 import InfoIcon from '@mui/icons-material/Info';
-import { metaAdder } from '../../../common/helpers/meta.adder';
+import { metaAdder } from '../../common/helpers/meta.adder';
 
 const MatTable: React.FC = () => {
 
@@ -21,8 +21,11 @@ const MatTable: React.FC = () => {
   const dataStatusProd = useSelector(
     (state: RootState) => (state.productReducer.dataStatus),
   );
-  const activeCategoryName = useSelector(
-    (state: RootState) => (state.productReducer.activeCategoryName),
+  const activeCategory = useSelector(
+    (state: RootState) => (state.productReducer.activeCategory),
+  );
+  const searchInputText = useSelector(
+    (state: RootState) => (state.productReducer.searchInputText),
   );
   const dispatch = useDispatch();
   const { id } = useParams<{ id: string }>();
@@ -31,15 +34,15 @@ const MatTable: React.FC = () => {
   const [rowsPerPage, setRowsPerPage] = React.useState(10);
 
   React.useEffect(() => {
-    document.title = `${activeCategoryName} Electroprom`;
-    metaAdder(`name="description"`, `${activeCategoryName} Electroprom`);
-    metaAdder(`name="keywords"`, `${activeCategoryName}, купить ${activeCategoryName}, ${activeCategoryName} Украина, ${activeCategoryName} el-prom`);
+    document.title = `${activeCategory.name} Electroprom`;
+    metaAdder(`name="description"`, `${activeCategory.name} Electroprom`);
+    metaAdder(`name="keywords"`, `${activeCategory.name}, купить ${activeCategory.name}, ${activeCategory.name} Украина, ${activeCategory.name} el-prom`);
 
     dispatch<any>(ProductsActionCreator.getProductsAsync(id!));
-    if (!activeCategoryName) {
-      dispatch<any>(ProductsActionCreator.setActiveCategoryNameAsync(id!));
+    if (!activeCategory) {
+      dispatch<any>(ProductsActionCreator.setActiveCategoryAsync(id!));
     }
-  }, [dispatch, activeCategoryName, id]);
+  }, [dispatch, activeCategory, id]);
 
   const handleChangePage = (event: unknown, newPage: number) => {
     setPage(newPage);
@@ -58,7 +61,7 @@ const MatTable: React.FC = () => {
   return (
     <Stack sx={{ m: '2rem 0' }}>
 
-      <Typography variant="h5">{activeCategoryName}</Typography>
+      <Typography variant="h5">{searchInputText ? "Результаты поиска:" : activeCategory.name}</Typography>
 
       <Paper sx={{ width: '100%', overflow: 'hidden' }}>
         <TableContainer sx={{ maxHeight: 440 }}>
