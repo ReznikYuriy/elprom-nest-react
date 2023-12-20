@@ -3,7 +3,7 @@ import { styled } from '@mui/material/styles';
 import { List, ListItemText, Divider, Drawer, Hidden, ListItemButton } from '@mui/material';
 import { Link as RouterLink } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
-import { CategoriesActionCreator } from '../../store/slices';
+import { CategoriesActionCreator, ProductsActionCreator } from '../../store/slices';
 import Logo from '../../assets/images/logo.png';
 import BackdropComponent from '../backdrop-component/backdrop-component';
 import { RouteEnum } from '../../common/enums/route.enum';
@@ -74,7 +74,7 @@ const Sidebar: React.FC<IProps> = ({ isOpen, onCloseSidebar }) => {
   }, [dispatch]);
 
   const onSidebarClick = (listItem: string): void => {
-    dispatch(CategoriesActionCreator.setActiveCategoryName(listItem));
+    dispatch<any>(ProductsActionCreator.setActiveCategoryNameAsync(listItem));
   };
 
   const drawer = (
@@ -82,10 +82,6 @@ const Sidebar: React.FC<IProps> = ({ isOpen, onCloseSidebar }) => {
       <div className={classes.toolbar}><img src={Logo} width="230px" alt="Electroprom logo" title="Electroprom" loading="lazy" /></div>
       <Divider />
       <List>
-        <ListItemButton key="AllCategories" component={RouterLink} to={RouteEnum.CATEGORIES}
-          onClick={() => onSidebarClick('Все товары')}>
-          <ListItemText primary="Все товары" />
-        </ListItemButton>
         {categories.map(cat => (
           <ListItemButton key={cat.id} component={RouterLink} to={RouteEnum.CATEGORIES + cat.id}
             onClick={() => onSidebarClick(cat.id)}>

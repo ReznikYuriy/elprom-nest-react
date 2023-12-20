@@ -7,13 +7,11 @@ import { ICategory } from "../../../common/interfaces";
 
 type CategoriesState = {
   categories: ICategory[];
-  activeCategoryName: string;
   dataStatus: DataStatus;
 };
 
 const initialState: CategoriesState = {
   categories: [],
-  activeCategoryName: "",
   dataStatus: DataStatus.PENDING,
 };
 
@@ -24,9 +22,6 @@ const { reducer, actions } = createSlice({
     setCategories: (state, action: PayloadAction<ICategory[]>) => {
       state.categories = action.payload;
       state.dataStatus = DataStatus.SUCCESS;
-    },
-    setActiveCategoryName: (state, action: PayloadAction<string>) => {
-      state.activeCategoryName = action.payload;
     },
   },
 });

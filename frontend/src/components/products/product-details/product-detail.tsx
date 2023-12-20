@@ -121,7 +121,7 @@ const ProductDetail: React.FC = () => {
               </Typography>}
           </div>
           <div className={classes.contentItem}>
-            <img src={`/images/${selectedProduct.imagepath}`} style={{ borderRadius: '5%' }} alt="image" />
+            <img src={`/images/${selectedProduct.imagepath}`} style={{ borderRadius: '5%' }} alt="img" />
           </div>
         </CardContent>
         <div className={classes.footer}>
