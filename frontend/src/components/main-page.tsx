@@ -5,6 +5,7 @@ import CardMedia from '@mui/material/CardMedia';
 import CardContent from '@mui/material/CardContent';
 import Typography from '@mui/material/Typography';
 import MainImg from '../assets/images/main.jpg';
+import { metaAdder } from '../common/helpers/meta.adder';
 
 const classes = {
   root: 'root',
@@ -35,7 +36,11 @@ const StyledCard = styled(Card)((
 }));
 
 const MainPage: FC = () => {
-
+  React.useEffect(() => {
+    document.title = 'Electroprom - компоненты силовой электроники';
+    metaAdder(`name="description"`, 'Продажа силовых полупроводниковых приборов, охладителей, импортных и отечественных радиокомпонентов по Украине');
+    metaAdder(`name="keywords"`, 'Electroprom, Электропром Украина, Электропром, Электропром Запорожье, Электропром сайт, Эл-пром, El-prom, Electroprom Украина');
+  }, []);
   return (
     <StyledCard className={classes.root}>
       <CardMedia

@@ -2,13 +2,11 @@ import * as React from 'react';
 import { styled } from '@mui/material/styles';
 import viberIcon from '../assets/images/viber-icon.svg';
 import { Alert } from '@mui/material';
-import { Helmet } from 'react-helmet';
-
-const PREFIX = 'Contacts';
+import { metaAdder } from '../common/helpers/meta.adder';
 
 const classes = {
-  root: `${PREFIX}-root`,
-  alert: `${PREFIX}-alert`
+  root: 'root',
+  alert: 'alert'
 };
 
 const Root = styled('div')({
@@ -25,13 +23,14 @@ const Root = styled('div')({
 
 const Contacts: React.FC = () => {
 
+  React.useEffect(() => {
+    document.title = 'Контакты Electroprom';
+    metaAdder(`name="description"`, 'Electroprom - контактная информация: телефон, почта, адрес, как проехать');
+    metaAdder(`name="keywords"`, 'Electroprom контакты, Электропром Украина, Электропром контакты, Электропром Запорожье, Электропром сайт, Эл-пром, El-prom, Electroprom Украина');
+  }, []);
+
   return (
     <Root className={classes.root}>
-      <Helmet>
-        <title>Контакты Electroprom</title>
-        <meta name="description" content="Electroprom - контактная информация: телефон, почта, адрес, как проехать" />
-        <meta name="keywords" content="Electroprom контакты, Электропром Украина, Электропром контакты, Электропром Запорожье, Электропром сайт, Эл-пром, El-prom, Electroprom Украина" />
-      </Helmet>
       <h1>Контакты</h1>
       <h3>ЧП «Электропром»</h3>
       <p>Украина, Запорожье<br /><img src={viberIcon} width="12px" alt="viber-icon" /><a href="tel:+380677201352">+38(067)720-13-52</a><br /><a href="tel:+380667911850">+38(066)791-18-50</a><strong> Юрий</strong></p>

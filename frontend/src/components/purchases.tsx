@@ -1,7 +1,7 @@
 import { styled } from '@mui/material/styles';
 import { Alert } from '@mui/material';
 import * as React from 'react';
-import { Helmet } from 'react-helmet';
+import { metaAdder } from '../common/helpers/meta.adder';
 
 const classes = {
   ul: 'ul',
@@ -23,14 +23,13 @@ const Root = styled('div')({
 });
 
 const Purchases: React.FC = () => {
-
+  React.useEffect(() => {
+    document.title = 'Покупаем неликвиды Electroprom';
+    metaAdder(`name="description"`, 'Electroprom - на постоянной основе покупаем неликвиды и складские остатки - силовые диоды, тиристоры, симисторы, оптотиристоры, модули, оптотиристоры');
+    metaAdder(`name="keywords"`, 'Electroprom, Электропром Украина, Электропром, Электропром Запорожье, Эл-пром, El-prom, Electroprom Украина, купим силовые диоды, купим тиристоры, купим симисторы, купим оптотиристоры, купим силовые модули, купим оптотиристоры, купим IGBT');
+  }, []);
   return (
     <Root>
-      <Helmet>
-        <title>Покупаем неликвиды Electroprom</title>
-        <meta name="description" content="Electroprom - на постоянной основе покупаем неликвиды и складские остатки - силовые диоды, тиристоры, симисторы, оптотиристоры, модули, оптотиристоры" />
-        <meta name="keywords" content="Electroprom, Электропром Украина, Электропром, Электропром Запорожье, Эл-пром, El-prom, Electroprom Украина, купим силовые диоды, купим тиристоры, купим симисторы, купим оптотиристоры, купим силовые модули, купим оптотиристоры, купим IGBT" />
-      </Helmet>
       <h1>Покупаем:</h1>
       <Alert severity="info" className={classes.alert}>
         На постоянной основе покупаем силовые диоды, тиристоры, симисторы, оптотиристоры, модули, оптотиристоры:
