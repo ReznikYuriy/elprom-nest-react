@@ -9,7 +9,7 @@ export const productsToTableData = (
       name: el.name,
       price: el.price,
       quantity: el.quantity,
-      imagepath: el.imagepath,
+      images: el.images,
     };
   });
 };

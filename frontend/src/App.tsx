@@ -7,7 +7,7 @@ import Delivery from './components/delivery';
 import Contacts from './components/contacts';
 import MainPage from './components/main-page';
 import MatTable from './components/products/react.material.table';
-import ProductDetail from './components/products/product-detail';
+import ProductDetail from './components/products/product-details/product-detail';
 import HomeIcon from '@mui/icons-material/Home';
 import LocalShippingIcon from '@mui/icons-material/LocalShipping';
 import AttachMoneyIcon from '@mui/icons-material/AttachMoney';

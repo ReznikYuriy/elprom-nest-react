@@ -97,7 +97,7 @@ const MatTable: React.FC = () => {
                       </TableCell>
                       <TableCell>
                         <Tooltip title="Подробно о товаре">
-                          <IconButton color="inherit" component={RouterLink} to={RouteEnum.PRODUCT_DETAILS/*  + (rowData as Partial<IProduct>).id */}>
+                          <IconButton color="inherit" component={RouterLink} to={RouteEnum.PRODUCT_DETAILS + row?.id}>
                             <InfoIcon />
                           </IconButton>
                         </Tooltip>

@@ -4,21 +4,19 @@ import { Card, CardHeader, CardContent, IconButton, SvgIcon } from '@mui/materia
 import Typography from '@mui/material/Typography';
 import { useNavigate, useParams } from 'react-router-dom';
 import { useSelector } from 'react-redux';
-import { getCurrentProductById } from './helpers/getCurrentProductById';
-import BackdropComponent from '../backdrop-component/backdrop-component';
-import { getCurrentCategoryById } from '../../common/helpers/get.current.category';
-import { RootState } from '../../store/types';
-
-const PREFIX = 'ProductDetail';
+import { getCurrentProductById } from '../helpers/getCurrentProductById';
+import BackdropComponent from '../../backdrop-component/backdrop-component';
+import { getCurrentCategoryById } from '../../../common/helpers/get.current.category';
+import { RootState } from '../../../store/types';
 
 const classes = {
-  root: `${PREFIX}-root`,
-  header: `${PREFIX}-header`,
-  content: `${PREFIX}-content`,
-  contentItem: `${PREFIX}-contentItem`,
-  textContent: `${PREFIX}-textContent`,
-  footer: `${PREFIX}-footer`,
-  backButton: `${PREFIX}-backButton`
+  root: 'root',
+  header: 'header',
+  content: 'content',
+  contentItem: 'contentItem',
+  textContent: 'textContent',
+  footer: 'footer',
+  backButton: 'backButton'
 };
 
 const Root = styled('div')((
@@ -32,19 +30,6 @@ const Root = styled('div')((
     maxWidth: 900,
     backgroundColor: '#d0d0d0',
     flexDirection: 'column', //change to row for horizontal layout
-    /* '& .MuiCardHeader-root': {
-
-    }, */
-    /* '& .MuiCardHeader-title': {
-      //could also be placed inside header class
-      backgroundColor: '#FCFCFC',
-    },
-    '& .MuiCardHeader-subheader	': {
-      backgroundImage: 'linear-gradient(to bottom right, #090977, #00d4ff);',
-    },
-    '& .MuiCardContent-root': {
-      backgroundImage: 'linear-gradient(to bottom right, #00d4ff, #00ff1d);',
-    }, */
   },
 
   [`& .${classes.header}`]: {
@@ -63,11 +48,12 @@ const Root = styled('div')((
     '@media (max-width: 900px)': {
       flex: '100%',
     },
-  },
-
-  [`& .${classes.textContent}`]: {
     textAlign: 'left',
   },
+
+  /* [`& .${classes.textContent}`]: {
+    textAlign: 'left',
+  }, */
 
   [`& .${classes.footer}`]: {
     fontSize: 14,
@@ -83,17 +69,17 @@ const Root = styled('div')((
 
 const ProductDetail: React.FC = () => {
   const { id } = useParams<{ id: string }>();
-  const products  = useSelector(
+  const products = useSelector(
     (state: RootState) => (state.productReducer.products),
   );
   const categories = useSelector(
     (state: RootState) => (state.categoryReducer.categories),
   );
   const navigate = useNavigate();
-  const selectedProduct = getCurrentProductById(products, id||'');
+  const selectedProduct = getCurrentProductById(products, id || '');
   const selectedCategory = getCurrentCategoryById(categories, selectedProduct!.category_id);
   if (!selectedProduct || !selectedCategory) return <BackdropComponent />;
-  
+
   return (
     <Root>
       <Card className={classes.root}>
@@ -121,7 +107,7 @@ const ProductDetail: React.FC = () => {
               </Typography>}
           </div>
           <div className={classes.contentItem}>
-            <img src={`/images/${selectedProduct.imagepath}`} style={{ borderRadius: '5%' }} alt="img" />
+            <img src={`/images/${selectedProduct.images[0]}`} style={{ borderRadius: '5%' }} alt="img" />
           </div>
         </CardContent>
         <div className={classes.footer}>
