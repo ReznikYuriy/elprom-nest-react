@@ -1,109 +1,45 @@
-import React from 'react';
-import { Card, CardHeader, CardContent, IconButton, SvgIcon, Stack, Box, CardActions, CardMedia, CardActionArea, Divider, Button } from '@mui/material';
-import Typography from '@mui/material/Typography';
-import { useNavigate, useParams } from 'react-router-dom';
-import { useDispatch, useSelector } from 'react-redux';
+import React, { useState } from 'react';
+import { Stack } from '@mui/material';
+import { useParams } from 'react-router-dom';
 import BackdropComponent from '../../backdrop-component/backdrop-component';
-import { RootState } from '../../../store/types';
 import { metaAdder } from '../../../common/helpers/meta.adder';
-import { ProductsActionCreator } from '../../../store/slices';
 import { IProduct } from '../../../common/interfaces';
 import NotFound from '../../not-found/not-found';
-interface IProps {
-  product: IProduct;
-}
+import { getProductById } from '../../../api/product.api';
+import PhotoCard from './photo.card';
+import DescriptionCard from './description.card';
 
-const PhotoCard: React.FC<IProps> = ({ product }) => {
-  return (
-    <Card sx={{ maxWidth: 500 }}>
-      <CardMedia
-        component="img"
-        height="500"
-        image='/images/1x1.gif'
-        alt="Paella dish"
-      />
-      <Stack
-        direction={'row'}
-        //spacing={4}
-        justifyContent='space-around'
-        padding={3}
-      >
-        <ActionAreaCard />
-        <ActionAreaCard />
-        <ActionAreaCard />
-        <ActionAreaCard />
-      </Stack>
-    </Card>);
-}
-const ActionAreaCard = () => {
-  return (
-    <Card sx={{ maxWidth: 50 }}>
-      <CardActionArea>
-        <CardMedia
-          component="img"
-          height="50"
-          image="/images/1x1.gif"
-          alt="green iguana"
-        />
 
-      </CardActionArea>
-    </Card>
-  );
-}
-const DescriptionCard: React.FC<IProps> = ({ product }) => {
-  const navigate = useNavigate();
-  return (
-    <Box sx={{ minWidth: 300 }}>
-      <Card variant="outlined">
-        <CardHeader
-          sx={{
-            backgroundColor: '#4b4c4c',
-            color: '#FF9100',
-            fontVariant: 'h4'
-          }}
-          title={product?.name}
-        />
-        <CardContent sx={{ color:  '#4b4c4c' }}>
-          <Typography variant='h6' gutterBottom>
-            Доступно к заказу, шт:
-          </Typography>
-          <Typography variant="h5" component="div" align={'right'}>
-            {product?.quantity}
-          </Typography>
-          <Divider />
-          <Typography variant='h6' gutterBottom>
-            Цена, грн:
-          </Typography>
-          <Typography variant="h4" component="div" align={'right'}>
-            {product?.price}
-          </Typography>
-        </CardContent>
-        <CardActions>
-          <Button size="small" sx={{ color: "#4b4c4c" }} onClick={() => navigate(-1)}>
-            Назад к списку
-          </Button>
-
-        </CardActions>
-      </Card>
-    </Box>
-  );
-}
 const ProductDetail: React.FC = () => {
   const { id } = useParams<{ id: string }>();
-  const current_product = useSelector(
-    (state: RootState) => (state.productReducer.current_product),
-  );
-  const dispatch = useDispatch();
+  const [current_product, setCurrent_product] = useState<IProduct | null>(null);
+  const [product_status, setProduct_status] = useState<string>('empty')
 
   React.useEffect(() => {
-    document.title = `${current_product?.name} Electroprom`;
-    metaAdder(`name="description"`, `${current_product?.name} Electroprom`);
-    metaAdder(`name="keywords"`, `${current_product?.name}, купить ${current_product?.name}, ${current_product?.name} Украина, ${current_product?.name} el-prom`);
+    console.log({ id });
 
-    dispatch<any>(ProductsActionCreator.getCurrentProductAsync(id!));
-  }, [dispatch, id, current_product?.name]);
+    const fetchCurrentProduct = async () => {
+      const current_product = await getProductById(id!);
+      setCurrent_product(current_product);
+      if (current_product) { setProduct_status('ok') } else (setProduct_status('not_found'))
+    }
+    fetchCurrentProduct();
 
-  if (!current_product) return <NotFound />;
+  }, [id]);
+  
+  React.useEffect(() => {
+    if (current_product) {
+      document.title = `${current_product?.name} Electroprom`;
+      metaAdder(`name="description"`, `${current_product?.name} Electroprom`);
+      metaAdder(`name="keywords"`, `${current_product?.name}, купить ${current_product?.name}, ${current_product?.name} Украина, ${current_product?.name} el-prom`);
+    }
+  }, [current_product]);
+
+
+  if (!current_product) {
+    if (product_status === 'empty') { return <BackdropComponent />; }
+    else { return <NotFound />; }
+  }
 
   return (
     <Stack

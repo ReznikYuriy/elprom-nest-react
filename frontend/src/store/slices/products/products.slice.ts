@@ -3,7 +3,6 @@ import { AppThunk } from "../../types";
 import { DataStatus } from "../../enum/data-status.enum";
 import { ReducerName } from "../../enum/reducer-name.enum";
 import {
-  getProductById,
   getProductsByCategoryId,
   getProductsBySearch,
 } from "../../../api/product.api";
@@ -14,7 +13,6 @@ type CategoryType = { id: string; name: string };
 
 type ProductsState = {
   products: IProduct[];
-  current_product: IProduct | null;
   dataStatus: DataStatus;
   activeCategory: CategoryType;
   searchInputText: string;
@@ -22,10 +20,9 @@ type ProductsState = {
 
 const initialState: ProductsState = {
   products: [],
-  current_product: null,
   dataStatus: DataStatus.PENDING,
   activeCategory: { id: "", name: "" },
-  searchInputText: "поиск по складу",
+  searchInputText: "",
 };
 
 const { reducer, actions } = createSlice({
@@ -35,9 +32,6 @@ const { reducer, actions } = createSlice({
     setProducts: (state, action: PayloadAction<IProduct[]>) => {
       state.products = action.payload;
       state.dataStatus = DataStatus.SUCCESS;
-    },
-    setCurrentProduct: (state, action: PayloadAction<IProduct|null>) => {
-      state.current_product = action.payload;
     },
     setActiveCategory: (state, action: PayloadAction<CategoryType>) => {
       state.activeCategory = action.payload;
@@ -97,23 +91,11 @@ const setActiveCategoryAsync =
     }
   };
 
-const getCurrentProductAsync =
-  (id: string): AppThunk =>
-  async (dispatch) => {
-    try {
-      const product = await getProductById(id);
-      dispatch(actions.setCurrentProduct(product));
-    } catch (error) {
-      throw error;
-    }
-  };
-
 const ProductsActionCreator = {
   ...actions,
   getProductsAsync,
   getProductsBySearchAsync,
   setActiveCategoryAsync,
-  getCurrentProductAsync,
 };
 
 export { ProductsActionCreator, reducer };

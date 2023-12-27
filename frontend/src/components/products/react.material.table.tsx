@@ -7,10 +7,9 @@ import { ProductsActionCreator } from '../../store/slices';
 import { DataStatus } from '../../store/enum';
 import BackdropComponent from '../backdrop-component/backdrop-component';
 import { Stack } from '@mui/system';
-import { IconButton, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TablePagination, TableRow, Tooltip, Typography } from '@mui/material';
+import { Button, Card, CardActionArea, CardMedia, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TablePagination, TableRow, Typography } from '@mui/material';
 import { Link as RouterLink } from 'react-router-dom';
 import { RouteEnum } from '../../common/enums';
-import InfoIcon from '@mui/icons-material/Info';
 import { metaAdder } from '../../common/helpers/meta.adder';
 
 const MatTable: React.FC = () => {
@@ -72,22 +71,32 @@ const MatTable: React.FC = () => {
                 <TableCell align="center">Наименование</TableCell>
                 <TableCell align="right">Доступно к заказу&nbsp;(шт)</TableCell>
                 <TableCell align="right">Цена&nbsp;(грн)</TableCell>
-                <TableCell align="center"></TableCell>
+
               </TableRow>
             </TableHead>
             <TableBody>
               {data
                 .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                 .map((row) => {
+                  const defaultImg = (row?.images && row?.images[0]) ? `/images/${row?.images[0]}` : '/images/1x1.gif';
                   return (
                     <TableRow hover role="checkbox" tabIndex={-1} key={row.id}>
                       <TableCell>
-                        <Tooltip title="Фото товара">
-                          <img src='/images/1x1.gif' alt="" style={{ width: 50, borderRadius: '15%' }} />
-                        </Tooltip>
+                        <Card sx={{ maxWidth: 50, borderRadius: '15%' }}>
+                          <CardActionArea component={RouterLink} to={RouteEnum.PRODUCT_DETAILS + row?.id} >
+                            <CardMedia
+                              component="img"
+                              image={defaultImg}
+                              alt={row?.name}
+
+                            />
+                          </CardActionArea>
+                        </Card>
                       </TableCell>
-                      <TableCell align='left'>
-                        {row?.name}
+                      <TableCell align='left' >
+                        <Button sx={{ color: "#4b4c4c" }} component={RouterLink} to={RouteEnum.PRODUCT_DETAILS + row?.id}>
+                          {row?.name}
+                        </Button>
                       </TableCell>
                       <TableCell align='right'>
                         {row?.quantity}
@@ -95,13 +104,7 @@ const MatTable: React.FC = () => {
                       <TableCell align='right'>
                         {row?.price}
                       </TableCell>
-                      <TableCell>
-                        <Tooltip title="Подробно о товаре">
-                          <IconButton color="inherit" component={RouterLink} to={RouteEnum.PRODUCT_DETAILS + row?.id}>
-                            <InfoIcon />
-                          </IconButton>
-                        </Tooltip>
-                      </TableCell>
+
                     </TableRow>
                   );
                 })}
