@@ -63,6 +63,14 @@ export class ProductController {
     return await this.productService.productSearch(query.name);
   }
 
+  @ApiOkResponse({
+    type: String,
+  })
+  @Get('warehouse-upd-date')
+  async getWarehouseUpdDate(): Promise<string> {
+    return await this.productService.getWarehouseUpdDate();
+  }
+
   @Patch(':id')
   async update(
     @Param('id') id: string,

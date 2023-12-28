@@ -47,3 +47,13 @@ export async function getProductById(id: string): Promise<IProduct|null> {
     return null;
   }
 }
+
+export async function getWarehouseUpdDate(): Promise<string> {
+  try {
+    const response = await instance.get<string>('product/warehouse-upd-date');
+    return response.data;
+  } catch (err) {
+    console.log(err);
+    return '';
+  }
+}

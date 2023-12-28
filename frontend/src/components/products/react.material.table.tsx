@@ -88,7 +88,6 @@ const MatTable: React.FC = () => {
                               component="img"
                               image={defaultImg}
                               alt={row?.name}
-
                             />
                           </CardActionArea>
                         </Card>

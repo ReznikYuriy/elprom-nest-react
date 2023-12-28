@@ -1,6 +1,6 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { styled } from '@mui/material/styles';
-import { AppBar, Hidden, Tooltip } from '@mui/material';
+import { AppBar, Box, Hidden, Stack, Tooltip, Typography } from '@mui/material';
 import { Toolbar, Button } from '@mui/material';
 import { Link as RouterLink } from 'react-router-dom';
 import HomeIcon from '@mui/icons-material/Home';
@@ -9,6 +9,7 @@ import IconButton from '@mui/material/IconButton';
 import MenuIcon from '@mui/icons-material/Menu';
 import { RouteEnum } from '../../common/enums/route.enum';
 import SearchComponent from './search.component';
+import { getWarehouseUpdDate } from '../../api/product.api';
 
 const classes = {
     appBar: 'appBar',
@@ -57,6 +58,14 @@ interface IProps {
 }
 
 const AppBarComponent: React.FC<IProps> = ({ onCloseSidebar }) => {
+    const [updDate, setUpdDate] = useState<string>('');
+    React.useEffect(() => {
+        const fetchDate = async () => {
+            const _date = await getWarehouseUpdDate();
+            setUpdDate(_date);
+        }
+        fetchDate();
+    }, []);
     return (
         <Root>
             <AppBar className={classes.appBar}>
@@ -79,13 +88,33 @@ const AppBarComponent: React.FC<IProps> = ({ onCloseSidebar }) => {
                         <Button color="inherit" component={RouterLink} to={RouteEnum.DELIVERY}>ОПЛАТА И ДОСТАВКА</Button>
                         <Button color="inherit" component={RouterLink} to={RouteEnum.PURCHASES}>ЗАКУПАЕМ</Button>
                         <Button color="inherit" component={RouterLink} to={RouteEnum.CONTACTS}>КОНТАКТЫ</Button>
-                        <IconButton color="inherit" href="/price.zip" download size="large">
-                            <Tooltip title="Скачать прайс" enterDelay={500} leaveDelay={200}>
-                                <GetAppIcon />
-                            </Tooltip>
-                        </IconButton>
                     </Hidden>
-                    <SearchComponent/>
+                    <SearchComponent />
+                    <Hidden mdDown implementation="css">
+                        <Box sx={{
+                            border: 1, borderRadius: '5px', mx: 'auto', width: 120, p: 1,
+                            m: 1, cursor:'pointer'
+                        }}>
+                            <Typography sx={{
+                                fontSize: '0.8rem',
+                                fontWeight: '700'
+                            }} align='center'>
+                                склад обновлен
+                            </Typography>
+                            <Stack direction="row" alignItems='center'>
+                                <Typography align='center' sx={{ fontWeight: '700', marginRight: '8px' }}>
+                                    {updDate}
+
+                                </Typography>
+                                <IconButton color="inherit" href="/price.zip" download size="large" sx={{ width: 25, height: 20 }} >
+                                    <Tooltip title="Скачать прайс" enterDelay={500} leaveDelay={200}>
+                                        <GetAppIcon />
+                                    </Tooltip>
+                                </IconButton>
+                            </Stack>
+
+                        </Box>
+                    </Hidden>
                 </Toolbar>
             </AppBar>
         </Root>

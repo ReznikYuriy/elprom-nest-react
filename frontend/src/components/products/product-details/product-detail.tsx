@@ -16,8 +16,6 @@ const ProductDetail: React.FC = () => {
   const [product_status, setProduct_status] = useState<string>('empty')
 
   React.useEffect(() => {
-    console.log({ id });
-
     const fetchCurrentProduct = async () => {
       const current_product = await getProductById(id!);
       setCurrent_product(current_product);
@@ -26,7 +24,7 @@ const ProductDetail: React.FC = () => {
     fetchCurrentProduct();
 
   }, [id]);
-  
+
   React.useEffect(() => {
     if (current_product) {
       document.title = `${current_product?.name} Electroprom`;

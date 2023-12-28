@@ -2,8 +2,6 @@ import React, { FC } from 'react';
 import { styled } from '@mui/material/styles';
 import Card from '@mui/material/Card';
 import CardMedia from '@mui/material/CardMedia';
-import CardContent from '@mui/material/CardContent';
-import Typography from '@mui/material/Typography';
 import MainImg from '../assets/images/main.jpg';
 import { metaAdder } from '../common/helpers/meta.adder';
 
@@ -48,12 +46,12 @@ const MainPage: FC = () => {
         image={MainImg}
         title="Electroprom - силовые п/п приборы, охладители, радиокомпоненты. Украина"
       />
-      <CardContent>
+      {/* <CardContent>
         <Typography variant="h6" color="textSecondary" component="p">
           Мы рады приветствовать Вас на нашем портале!
           Дата обновления прайс-листа с остатками на складе 01.12.2023.
         </Typography>
-      </CardContent>
+      </CardContent> */}
     </StyledCard>
   );
 };

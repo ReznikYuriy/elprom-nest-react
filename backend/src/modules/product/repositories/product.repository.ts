@@ -63,4 +63,15 @@ export default class ProductRepository {
   async delete(id: string) {
     return this.productSchema.destroy({ where: { id } });
   }
+
+  async getWarehouseUpdDate(): Promise<ProductModel[]> {
+    return this.productSchema.findAll({
+      where: {
+        quantity: { [Op.ne]: 0 },
+      },
+      attributes: ['updatedAt'],
+      order: [['updatedAt', 'DESC']],
+      limit: 1,
+    });
+  }
 }

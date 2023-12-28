@@ -51,6 +51,26 @@ export class ProductService {
     return this.productRepo.findAllByName(name);
   }
 
+  async getWarehouseUpdDate(): Promise<string> {
+    const products = await this.productRepo.getWarehouseUpdDate();
+    if (products?.length > 0) {
+      return this.dateToString(products[0].updatedAt);
+    } else {
+      return this.dateToString(new Date());
+    }
+  }
+
+  private dateToString(_date: string | Date): string {
+    const date = new Date(_date);
+    const day = date.getDate();
+    const month =
+      date.getMonth() + 1 > 9
+        ? date.getMonth() + 1
+        : '0' + (date.getMonth() + 1);
+    const year = date.getFullYear().toString().slice(-2);
+    return `${day}.${month}.${year}`;
+  }
+
   public compareProducts(
     prodXLS: CreateProductDto,
     prodDB: ProductModel,
