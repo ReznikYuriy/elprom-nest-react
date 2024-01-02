@@ -9,7 +9,7 @@ import IconButton from '@mui/material/IconButton';
 import MenuIcon from '@mui/icons-material/Menu';
 import { RouteEnum } from '../../common/enums/route.enum';
 import SearchComponent from './search.component';
-import { getWarehouseUpdDate } from '../../api/product.api';
+import { getWarehouseUpdDate, getZipPriceList } from '../../api/product.api';
 
 const classes = {
     appBar: 'appBar',
@@ -66,6 +66,30 @@ const AppBarComponent: React.FC<IProps> = ({ onCloseSidebar }) => {
         }
         fetchDate();
     }, []);
+
+    const downloadFileHandler = async () => {
+        try {
+            const response = await getZipPriceList();
+
+            // Create a blob URL for the downloaded file
+            const blob = new Blob([response], { type: 'application/octet-stream' });
+            const url = window.URL.createObjectURL(blob);
+
+            // Create a link element and trigger a click to start the download
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'price.zip';
+            document.body.appendChild(a);
+            a.click();
+
+            // Clean up by removing the link element and revoking the blob URL
+            document.body.removeChild(a);
+            window.URL.revokeObjectURL(url);
+        } catch (error) {
+            console.error('Error downloading file:', error);
+        }
+    };
+
     return (
         <Root>
             <AppBar className={classes.appBar}>
@@ -91,29 +115,27 @@ const AppBarComponent: React.FC<IProps> = ({ onCloseSidebar }) => {
                     </Hidden>
                     <SearchComponent />
                     <Hidden mdDown implementation="css">
-                        <Box sx={{
-                            border: 1, borderRadius: '5px', mx: 'auto', width: 120, p: 1,
-                            m: 1, cursor:'pointer'
-                        }}>
-                            <Typography sx={{
-                                fontSize: '0.8rem',
-                                fontWeight: '700'
-                            }} align='center'>
-                                склад обновлен
-                            </Typography>
-                            <Stack direction="row" alignItems='center'>
-                                <Typography align='center' sx={{ fontWeight: '700', marginRight: '8px' }}>
-                                    {updDate}
-
+                        <Tooltip title="Скачать прайс" enterDelay={500} leaveDelay={200}>
+                            <Box sx={{
+                                border: 1, borderRadius: '5px', mx: 'auto', width: 120, p: 1,
+                                m: 1, cursor: 'pointer'
+                            }}
+                                onClick={downloadFileHandler}>
+                                <Typography sx={{
+                                    fontSize: '0.8rem',
+                                    fontWeight: '700'
+                                }} align='center'>
+                                    склад обновлен
                                 </Typography>
-                                <IconButton color="inherit" href="/price.zip" download size="large" sx={{ width: 25, height: 20 }} >
-                                    <Tooltip title="Скачать прайс" enterDelay={500} leaveDelay={200}>
-                                        <GetAppIcon />
-                                    </Tooltip>
-                                </IconButton>
-                            </Stack>
+                                <Stack direction="row" alignItems='center'>
+                                    <Typography align='center' sx={{ fontWeight: '700', marginRight: '8px' }}>
+                                        {updDate}
+                                    </Typography>
+                                    <GetAppIcon sx={{ width: 25, height: 20 }} />
+                                </Stack>
 
-                        </Box>
+                            </Box>
+                        </Tooltip>
                     </Hidden>
                 </Toolbar>
             </AppBar>

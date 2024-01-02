@@ -16,10 +16,10 @@ export class CreateProductDto {
   name: string;
 
   @ApiProperty({
-    type: String,
+    type: Number,
   })
   @IsString()
-  product_id_1C: string;
+  product_id_1C: number;
 
   @ApiProperty({
     type: String,

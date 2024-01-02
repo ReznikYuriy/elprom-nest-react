@@ -47,9 +47,9 @@ export default class ProductRepository {
     });
   }
 
-  async findById1C(id: string): Promise<ProductModel> {
+  async findById1C(id: number): Promise<ProductModel> {
     console.log({ id });
-    return this.productSchema.findOne({ where: { product_id_1C: `${id}` } });
+    return this.productSchema.findOne({ where: { product_id_1C: id } });
   }
 
   async update(id: string, data: UpdateProductDto): Promise<ProductModel> {

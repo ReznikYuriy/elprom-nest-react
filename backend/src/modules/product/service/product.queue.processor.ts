@@ -11,6 +11,7 @@ import { Job, Queue } from 'bull';
 import { ProductService } from './product.service';
 import ProductModel from '../model/product.model';
 import { XLSService } from './xls.service';
+import productIdCreator from '../helper/create.id';
 
 @Injectable()
 @Processor('product-queue')
@@ -59,7 +60,10 @@ export class ProductQueueProcessor {
       if (!prodInDb) {
         await this.productService.create({
           ...dto,
-          id: job.data.productBody.product_id_1C,
+          id: productIdCreator(
+            job.data.productBody.name,
+            job.data.productBody.product_id_1C,
+          ),
         });
       } else if (!this.productService.compareProducts(dto, prodInDb)) {
         await this.productService.update(prodInDb.id, dto);
@@ -69,6 +73,7 @@ export class ProductQueueProcessor {
       if (!queue_count) {
         await this.productService.updateSitemap();
         await this.xlsService.createXlsxPricelist();
+        await this.xlsService.createZipPrice();
       }
     } catch (error) {
       this.logger.error('Bad DB request.', error.stack);

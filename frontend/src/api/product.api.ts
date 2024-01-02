@@ -38,9 +38,11 @@ export async function getProductsBySearch(name: string): Promise<IProduct[]> {
   }
 }
 
-export async function getProductById(id: string): Promise<IProduct|null> {
+export async function getProductById(id: string): Promise<IProduct | null> {
   try {
-    const response = await instance.get<IProduct|null>(`product/${id}/product`);
+    const response = await instance.get<IProduct | null>(
+      `product/${id}/product`
+    );
     return response.data;
   } catch (err) {
     console.log(err);
@@ -50,10 +52,22 @@ export async function getProductById(id: string): Promise<IProduct|null> {
 
 export async function getWarehouseUpdDate(): Promise<string> {
   try {
-    const response = await instance.get<string>('product/warehouse-upd-date');
+    const response = await instance.get<string>("product/warehouse-upd-date");
     return response.data;
   } catch (err) {
     console.log(err);
-    return '';
+    return "";
+  }
+}
+
+export async function getZipPriceList(): Promise<any> {
+  try {
+    const response = await instance.get<any>("file/pricelist", {
+      responseType: "blob",
+    });
+    return response.data;
+  } catch (err) {
+    console.log(err);
+    return "";
   }
 }

@@ -11,6 +11,8 @@ import * as xlsx from 'xlsx';
 import { ProductService } from './product.service';
 import { dirname } from 'path';
 import { createReadStream, existsSync, mkdirSync } from 'fs';
+import { priceListConfig } from '../configs/price.config';
+import { ZipService } from './zip.service';
 
 @Injectable()
 export class XLSService {
@@ -18,11 +20,10 @@ export class XLSService {
   constructor(
     private readonly categoryService: CategoryService,
     private readonly productService: ProductService,
+    private readonly zipService: ZipService,
     @InjectQueue('product-queue')
     private queue: Queue,
   ) {}
-
-  priceListPath = 'dist/modules/product/files/PriceList.xlsx';
 
   async uploadXLSFile(file: Express.Multer.File): Promise<any> {
     try {
@@ -135,23 +136,58 @@ export class XLSService {
 
     /* create an XLSX file and try to save to Presidents.xlsx */
 
-    if (!existsSync(dirname(this.priceListPath))) {
-      mkdirSync(dirname(this.priceListPath));
+    if (!existsSync(priceListConfig.path)) {
+      mkdirSync(priceListConfig.path);
     }
-    xlsx.writeFile(workbook, this.priceListPath, { compression: true });
+    xlsx.writeFile(
+      workbook,
+      `${priceListConfig.path}${priceListConfig.xlsx_name}`,
+      { compression: true },
+    );
+    console.log('XLSX created');
   }
 
   async getXlsPriceList(): Promise<StreamableFile> {
-    if (!existsSync(dirname(this.priceListPath))) {
-      mkdirSync(dirname(this.priceListPath));
+    if (!existsSync(priceListConfig.path)) {
+      mkdirSync(priceListConfig.path);
     }
 
-    if (!existsSync(this.priceListPath)) {
+    if (!existsSync(`${priceListConfig.path}${priceListConfig.xlsx_name}`)) {
       await this.createXlsxPricelist();
     }
 
-    const file = createReadStream(this.priceListPath);
+    const file = createReadStream(
+      `${priceListConfig.path}${priceListConfig.xlsx_name}`,
+    );
 
     return new StreamableFile(file);
+  }
+
+  async getZipPrice(): Promise<StreamableFile> {
+    if (!existsSync(priceListConfig.path)) {
+      mkdirSync(priceListConfig.path);
+    }
+
+    if (!existsSync(`${priceListConfig.path}${priceListConfig.archive_name}`)) {
+      await this.createZipPrice();
+    }
+
+    const file = createReadStream(
+      `${priceListConfig.path}${priceListConfig.archive_name}`,
+    );
+
+    return new StreamableFile(file);
+  }
+
+  async createZipPrice(): Promise<any> {
+    if (!existsSync(priceListConfig.path)) {
+      mkdirSync(priceListConfig.path);
+    }
+
+    if (!existsSync(`${priceListConfig.path}${priceListConfig.xlsx_name}`)) {
+      await this.createXlsxPricelist();
+    }
+    await this.zipService.createZipArchive();
+    console.log('ZIP created');
   }
 }
