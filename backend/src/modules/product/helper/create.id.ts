@@ -41,7 +41,7 @@ const cyrillicToLatinic = (inputText: string): string => {
     .toLowerCase()
     .split('')
     .map(function (char) {
-      if (char === ' ') {
+      if ([' ', '/'].includes(char) /* char === ' ' || char === '/' */) {
         return '_';
       } else {
         return cyrillicMap[char] || char;

@@ -9,9 +9,8 @@ import { Queue } from 'bull';
 import { CategoryService } from 'src/modules/category/service/category.service';
 import * as xlsx from 'xlsx';
 import { ProductService } from './product.service';
-import { dirname } from 'path';
 import { createReadStream, existsSync, mkdirSync } from 'fs';
-import { priceListConfig } from '../configs/price.config';
+import { externalFilesConfig } from '../configs/files.config';
 import { ZipService } from './zip.service';
 
 @Injectable()
@@ -136,55 +135,63 @@ export class XLSService {
 
     /* create an XLSX file and try to save to Presidents.xlsx */
 
-    if (!existsSync(priceListConfig.path)) {
-      mkdirSync(priceListConfig.path);
+    if (!existsSync(externalFilesConfig.path)) {
+      mkdirSync(externalFilesConfig.path);
     }
     xlsx.writeFile(
       workbook,
-      `${priceListConfig.path}${priceListConfig.xlsx_name}`,
+      `${externalFilesConfig.path}${externalFilesConfig.xlsx_name}`,
       { compression: true },
     );
     console.log('XLSX created');
   }
 
   async getXlsPriceList(): Promise<StreamableFile> {
-    if (!existsSync(priceListConfig.path)) {
-      mkdirSync(priceListConfig.path);
+    if (!existsSync(externalFilesConfig.path)) {
+      mkdirSync(externalFilesConfig.path);
     }
 
-    if (!existsSync(`${priceListConfig.path}${priceListConfig.xlsx_name}`)) {
+    if (
+      !existsSync(`${externalFilesConfig.path}${externalFilesConfig.xlsx_name}`)
+    ) {
       await this.createXlsxPricelist();
     }
 
     const file = createReadStream(
-      `${priceListConfig.path}${priceListConfig.xlsx_name}`,
+      `${externalFilesConfig.path}${externalFilesConfig.xlsx_name}`,
     );
 
     return new StreamableFile(file);
   }
 
   async getZipPrice(): Promise<StreamableFile> {
-    if (!existsSync(priceListConfig.path)) {
-      mkdirSync(priceListConfig.path);
+    if (!existsSync(externalFilesConfig.path)) {
+      mkdirSync(externalFilesConfig.path);
     }
 
-    if (!existsSync(`${priceListConfig.path}${priceListConfig.archive_name}`)) {
+    if (
+      !existsSync(
+        `${externalFilesConfig.path}${externalFilesConfig.archive_name}`,
+      )
+    ) {
       await this.createZipPrice();
     }
 
     const file = createReadStream(
-      `${priceListConfig.path}${priceListConfig.archive_name}`,
+      `${externalFilesConfig.path}${externalFilesConfig.archive_name}`,
     );
 
     return new StreamableFile(file);
   }
 
   async createZipPrice(): Promise<any> {
-    if (!existsSync(priceListConfig.path)) {
-      mkdirSync(priceListConfig.path);
+    if (!existsSync(externalFilesConfig.path)) {
+      mkdirSync(externalFilesConfig.path);
     }
 
-    if (!existsSync(`${priceListConfig.path}${priceListConfig.xlsx_name}`)) {
+    if (
+      !existsSync(`${externalFilesConfig.path}${externalFilesConfig.xlsx_name}`)
+    ) {
       await this.createXlsxPricelist();
     }
     await this.zipService.createZipArchive();

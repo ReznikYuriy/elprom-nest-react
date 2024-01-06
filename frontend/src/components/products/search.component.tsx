@@ -5,6 +5,8 @@ import SearchIcon from '@mui/icons-material/Search';
 import { useDispatch, useSelector } from 'react-redux';
 import { ProductsActionCreator } from '../../store/slices';
 import { RootState } from '../../store/types';
+import { useNavigate } from 'react-router-dom';
+import { RouteEnum } from '../../common/enums';
 
 const Search = styled('div')(({ theme }) => ({
     position: 'relative',
@@ -53,16 +55,18 @@ const SearchComponent: React.FC = () => {
     const [searchText, setSearchText] = useState("")
     const [timerId, setTimerId] = useState<any>(0);
     const dispatch = useDispatch();
+    const navigate = useNavigate();
     const activeCategory = useSelector(
         (state: RootState) => (state.productReducer.activeCategory),
     );
 
     function handleQueryChange(event: React.ChangeEvent<HTMLInputElement>) {
         clearTimeout(timerId);
+        navigate(RouteEnum.CATEGORIES);
         setSearchText(event.target.value);
         const _timerId = setTimeout(
             () => {
-                dispatch<any>(ProductsActionCreator.getProductsBySearchAsync(event.target.value))
+                dispatch<any>(ProductsActionCreator.getProductsBySearchAsync(event.target.value));
             }
             , 500);
 

@@ -1,8 +1,9 @@
 import { Config } from "./types";
-import { stagingUrl } from "./staging";
-import { productionUrl } from "./production";
 
 const env =
-  process.env.REACT_APP_ENV === "production" ? productionUrl : stagingUrl;
-console.log(process.env);
+  process.env.NODE_ENV === "production"
+    ? { API_URL: "http://el-prom.docker.local:8000" }
+    : { API_URL: "http://localhost:3001" };
+console.log({ env });
+console.log("process.env:", process.env);
 export const AppConfig: Config = env;

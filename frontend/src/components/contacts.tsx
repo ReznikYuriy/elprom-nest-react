@@ -39,7 +39,7 @@ const Contacts: React.FC = () => {
       <p>Время работы: пн-сб 09:00-18:00<br />
         Email: <a href="mailto:reznik333@gmail.com"><strong>reznik333@gmail.com</strong></a><br /></p>
       <Alert severity="warning" className={classes.alert}>
-        Посылки отправлять на 9 отделение «Новой Почты», пр. Металлургов, 17. Резник Юрий Григорьевич <a href="tel:+380677201352">+380677201352</a>
+        Посылки отправлять на 9 отделение «Новой Почты», пр. Металлургов, 17. Резник Юрий <a href="tel:+380677201352">+380677201352</a>
       </Alert>
     </Root>
   );

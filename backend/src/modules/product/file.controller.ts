@@ -10,14 +10,14 @@ import {
 import { ApiBody, ApiConsumes, ApiOkResponse, ApiTags } from '@nestjs/swagger';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { XLSService } from './service/xls.service';
-import { ZipService } from './service/zip.service';
+import { ProductService } from './service/product.service';
 
 @ApiTags('file')
 @Controller('file')
 export class FileController {
   constructor(
     private readonly xlsService: XLSService,
-    private readonly zipService: ZipService,
+    private readonly productService: ProductService,
   ) {}
 
   @Get('pricelist')
@@ -25,6 +25,13 @@ export class FileController {
   @Header('Content-Disposition', 'attachment; filename="price.zip"')
   async getZipPrice(): Promise<StreamableFile> {
     return this.xlsService.getZipPrice();
+  }
+
+  @Get('sitemap')
+  @Header('Content-Type', 'application/xml')
+  @Header('Content-Disposition', 'attachment; filename="sitemap.xml"')
+  async getSitemap(): Promise<StreamableFile> {
+    return this.productService.getSitemap();
   }
 
   //@UseGuards(JwtAuthGuard, RoleGuard)
