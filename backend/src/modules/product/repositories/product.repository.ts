@@ -26,13 +26,30 @@ export default class ProductRepository {
     });
   }
 
+  async findAllByCategoryId(category_id: string): Promise<ProductModel[]> {
+    return this.productSchema.findAll({
+      where: { quantity: { [Op.ne]: 0 }, category_id },
+    });
+  }
+
   async findById(id: string): Promise<ProductModel> {
     return this.productSchema.findByPk(id);
   }
 
-  async findById1C(id: string): Promise<ProductModel> {
+  async findAllByName(name: string): Promise<ProductModel[]> {
+    return this.productSchema.findAll({
+      where: {
+        quantity: { [Op.ne]: 0 },
+        name: {
+          [Op.iLike]: `%${name}%`,
+        },
+      },
+    });
+  }
+
+  async findById1C(id: number): Promise<ProductModel> {
     console.log({ id });
-    return this.productSchema.findOne({ where: { product_id_1C: `${id}` } });
+    return this.productSchema.findOne({ where: { product_id_1C: id } });
   }
 
   async update(id: string, data: UpdateProductDto): Promise<ProductModel> {
@@ -45,5 +62,16 @@ export default class ProductRepository {
 
   async delete(id: string) {
     return this.productSchema.destroy({ where: { id } });
+  }
+
+  async getWarehouseUpdDate(): Promise<ProductModel[]> {
+    return this.productSchema.findAll({
+      where: {
+        quantity: { [Op.ne]: 0 },
+      },
+      attributes: ['updatedAt'],
+      order: [['updatedAt', 'DESC']],
+      limit: 1,
+    });
   }
 }

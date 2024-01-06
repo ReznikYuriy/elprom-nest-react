@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { styled } from '@mui/material/styles';
 import { Alert } from '@mui/material';
-import { Helmet } from 'react-helmet';
+import { metaAdder } from '../common/helpers/meta.adder';
 
 const classes = {
   root: `root`,
@@ -21,14 +21,13 @@ const Root = styled('div')({
 });
 
 const Delivery: React.FC = () => {
-
+  React.useEffect(() => {
+    document.title = 'Оплата и доставка Electroprom';
+    metaAdder(`name="description"`, 'Electroprom - оплата и доставка продукции транспортными компаниями Новая Почта, Укрпочта, Деливери по всей территории Украины');
+    metaAdder(`name="keywords"`, 'Electroprom, Электропром Украина, Электропром, Электропром Запорожье, Эл-пром, El-prom, Electroprom Украина, оплата, доставка, пересылка');
+  }, []);
   return (
     <Root className={classes.root}>
-      <Helmet>
-        <title>Оплата и доставка Electroprom</title>
-        <meta name="description" content="Electroprom - оплата и доставка продукции транспортными компаниями Новая Почта, Укрпочта, Деливери по всей территории Украины" />
-        <meta name="keywords" content="Electroprom, Электропром Украина, Электропром, Электропром Запорожье, Эл-пром, El-prom, Electroprom Украина, оплата, доставка, пересылка" />
-      </Helmet>
       <h1>Оплата и Доставка</h1>
 
       <Alert severity="info" className={classes.alert}>

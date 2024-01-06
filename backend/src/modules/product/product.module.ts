@@ -9,6 +9,8 @@ import configs from 'src/configs';
 import { BullModule } from '@nestjs/bull';
 import { ProductQueueProcessor } from './service/product.queue.processor';
 import { XLSService } from './service/xls.service';
+import { FileController } from './file.controller';
+import { ZipService } from './service/zip.service';
 
 @Module({
   imports: [
@@ -24,12 +26,13 @@ import { XLSService } from './service/xls.service';
     }),
     CategoryModule,
   ],
-  controllers: [ProductController],
+  controllers: [ProductController, FileController],
   providers: [
     ProductService,
     ProductRepository,
     ProductQueueProcessor,
     XLSService,
+    ZipService,
   ],
   exports: [ProductService],
 })

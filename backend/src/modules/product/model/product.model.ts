@@ -20,11 +20,11 @@ export default class ProductModel extends Model<ProductModel> {
   id: string;
 
   @Column({
-    type: DataType.STRING,
+    type: DataType.INTEGER,
     allowNull: false,
     unique: true,
   })
-  product_id_1C: string;
+  product_id_1C: number;
 
   @Column({
     type: DataType.STRING,

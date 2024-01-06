@@ -8,6 +8,8 @@ services:
     restart: "unless-stopped"
     #ports:
     #  - 3000:3000
+    environment:
+      BE_URL: ${BE_URL}
     volumes:
       - /frontend/node_modules
       - ./frontend/src:/user/src/app/src
@@ -15,7 +17,7 @@ services:
     tty: true
     networks:
       - el-prom-network
-
+      
   postgres:
     image: postgres:15.3
     container_name: postgres
