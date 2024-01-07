@@ -37,6 +37,15 @@ export class CategoryController {
 
   @ApiOkResponse({
     status: 200,
+    type: [CreateCategoryDto],
+  })
+  @Get('non-zero-balance')
+  async findAllNonZeroBalances() {
+    return this.categoryService.findAllNonZeroBalances();
+  }
+
+  @ApiOkResponse({
+    status: 200,
     type: CreateCategoryDto,
   })
   @Get(':id')

@@ -3,6 +3,8 @@ import { InjectModel } from '@nestjs/sequelize';
 import CategoryModel from '../model/category.model';
 import { CreateCategoryDto } from '../dto/create.category.dto';
 import { UpdateCategoryDto } from '../dto/update.category.dto';
+import ProductModel from 'src/modules/product/model/product.model';
+import { Op } from 'sequelize';
 
 @Injectable()
 export default class CategoryRepository {
@@ -19,6 +21,23 @@ export default class CategoryRepository {
     return this.categorySchema.findAll({
       attributes: ['id', 'name'],
       order: [['name', 'ASC']],
+    });
+  }
+
+  async findAllNonZeroBalances(): Promise<CategoryModel[]> {
+    return this.categorySchema.findAll({
+      attributes: ['id', 'name'],
+      order: [['name', 'ASC']],
+      include: [
+        {
+          model: ProductModel,
+          required: true,
+          where: {
+            quantity: { [Op.gt]: 0 },
+          },
+          attributes: [],
+        },
+      ],
     });
   }
 

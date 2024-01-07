@@ -1,11 +1,12 @@
-import { Injectable, Logger } from '@nestjs/common';
+import { Injectable, Logger, StreamableFile } from '@nestjs/common';
 import { CreateProductDto } from '../dto/create.product.dto';
 import { UpdateProductDto } from '../dto/update.product.dto';
 import ProductRepository from '../repositories/product.repository';
 import { CategoryService } from 'src/modules/category/service/category.service';
 import ProductModel from '../model/product.model';
 import * as xmlbuilder from 'xmlbuilder';
-import { writeFile } from 'fs';
+import { createReadStream, existsSync, mkdirSync, writeFile } from 'fs';
+import { externalFilesConfig } from '../configs/files.config';
 
 @Injectable()
 export class ProductService {
@@ -31,6 +32,10 @@ export class ProductService {
     return this.productRepo.findById(id);
   }
 
+  async findAllByCategoryId(category_id: string) {
+    return this.productRepo.findAllByCategoryId(category_id);
+  }
+
   async update(id: string, dto: UpdateProductDto) {
     return this.productRepo.update(id, dto);
   }
@@ -39,8 +44,32 @@ export class ProductService {
     return this.productRepo.delete(id);
   }
 
-  async getById1c(id: string) {
+  async getById1c(id: number) {
     return this.productRepo.findById1C(id);
+  }
+
+  async productSearch(name: string) {
+    return this.productRepo.findAllByName(name);
+  }
+
+  async getWarehouseUpdDate(): Promise<string> {
+    const products = await this.productRepo.getWarehouseUpdDate();
+    if (products?.length > 0) {
+      return this.dateToString(products[0].updatedAt);
+    } else {
+      return this.dateToString(new Date());
+    }
+  }
+
+  private dateToString(_date: string | Date): string {
+    const date = new Date(_date);
+    const day = date.getDate();
+    const month =
+      date.getMonth() + 1 > 9
+        ? date.getMonth() + 1
+        : '0' + (date.getMonth() + 1);
+    const year = date.getFullYear().toString().slice(-2);
+    return `${day}.${month}.${year}`;
   }
 
   public compareProducts(
@@ -88,11 +117,11 @@ export class ProductService {
       .ele('loc', siteName + '/contacts')
       .up()
       .ele('lastmod', lastMod);
-    urlset
+    /* urlset
       .ele('url')
       .ele('loc', siteName + '/price.zip')
       .up()
-      .ele('lastmod', lastMod);
+      .ele('lastmod', lastMod); */
     urlset
       .ele('url')
       .ele('loc', siteName + '/categories/')
@@ -115,9 +144,22 @@ export class ProductService {
         .ele('lastmod', lastMod);
     });
     const sitemap = urlset.end({ pretty: true });
-    await writeFile('../frontend/public/sitemap.xml', sitemap, (err) => {
+    writeFile(`${externalFilesConfig.path}sitemap.xml`, sitemap, (err) => {
       if (err) this.logger.log(err.message);
     });
     this.logger.log('Sitemap updated');
+  }
+  async getSitemap(): Promise<StreamableFile> {
+    if (!existsSync(externalFilesConfig.path)) {
+      mkdirSync(externalFilesConfig.path);
+    }
+
+    if (!existsSync(`${externalFilesConfig.path}sitemap.xml`)) {
+      await this.updateSitemap();
+    }
+
+    const file = createReadStream(`${externalFilesConfig.path}sitemap.xml`);
+
+    return new StreamableFile(file);
   }
 }

@@ -6,7 +6,7 @@ const store = configureStore({
   reducer: {
     [ReducerName.CATEGORIES]: categoriesReducer,
     [ReducerName.PRODUCTS]: productsReducer,
-  },
+  }
 });
 
 export { store };

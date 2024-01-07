@@ -1,70 +1,106 @@
 version: "3"
 services:
   frontend:
-    build: ./frontend
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile.build
     container_name: elprom-front
     restart: "unless-stopped"
-    ports:
-      - "3000:3000"
+    #ports:
+    #  - 3000:3000
+    environment:
+      BE_URL: ${BE_URL}
     volumes:
       - /frontend/node_modules
       - ./frontend/src:/user/src/app/src
     stdin_open: true
     tty: true
-
+    networks:
+      - el-prom-network
+      
   postgres:
     image: postgres:15.3
     container_name: postgres
     restart: "no"
-    ports:
-      - "5432:5432"
+    #ports:
+    #  - ${DB_PORT}:${DB_PORT}
     networks:
-      - postgres
+      - el-prom-network
     volumes:
       - postgres_data:/var/lib/postgresql/data
-    env_file:
-      - .env
+    #env_file:
+    #  - .env
 
   pgadmin:
-    image: dpage/pgadmin4:7.6
+    image: dpage/pgadmin4
     container_name: pgadmin
     restart: "no"
     networks:
-      - postgres
-    ports:
-      - "8080:80"
+      - el-prom-network
+    environment:
+      PGADMIN_DEFAULT_EMAIL: ${PGADMIN_DEFAULT_EMAIL}
+      PGADMIN_DEFAULT_PASSWORD: ${PGADMIN_DEFAULT_PASSWORD}
+    #ports:
+    #  - 8080:80
     depends_on:
       - postgres
     volumes:
       - ./pgadmin4/servers.json:/pgadmin4/servers.json
-    env_file:
-      - .env
+    #env_file:
+    #  - .env
 
   redis:
     image: redis:7-alpine
     container_name: redis_elprom
     restart: "always"
-    ports:
-      - 6379:6379
+    #ports:
+    #  - ${REDIS_PORT}:${REDIS_PORT}
+    networks:
+      - el-prom-network
 
   nestjs-api:
-    build: ./backend
+    build:
+      context: ./backend
     container_name: nestjs-api
     restart: "always"
-    env_file:
-      - .env
-    ports:
-      - "3001:3001"
+    #env_file:
+    #  - .env
+    #ports:
+    #  - "3001:3001"
+    environment:
+      DB_HOST: ${DB_HOST}
+      DB_PORT: ${DB_PORT}
+      DB_USERNAME: ${DB_USERNAME}
+      DB_PASSWORD: ${DB_PASSWORD}
+      DB_DATABASE_NAME: ${DB_DATABASE_NAME}
+      REDIS_HOST: ${REDIS_HOST}
+      REDIS_PORT: ${REDIS_PORT}
+      TTL: ${TTL}
+      API_PORT: ${API_PORT}
     depends_on:
       - postgres
     volumes:
       - /backend/node_modules
       - ./backend/src:/user/src/api/src
     networks:
-      - postgres
+      - el-prom-network
+
+  nginx:
+    image: nginx:stable-alpine
+    container_name: elprom_nginx
+    ports:
+      - 8000:8000
+    volumes:
+      - ./nginx/nginx.conf.dev:/etc/nginx/conf.d/nginx.conf
+    depends_on:
+      - frontend
+      - nestjs-api
+      - pgadmin
+    networks:
+      - el-prom-network
 
 networks:
-  postgres:
+  el-prom-network:
     driver: bridge
 
 volumes:
