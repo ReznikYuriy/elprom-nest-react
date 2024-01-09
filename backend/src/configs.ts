@@ -12,7 +12,7 @@ export default {
     port: Number(process.env.DB_PORT) || 5432,
     username: process.env.DB_USERNAME || 'postgres',
     password: process.env.DB_PASSWORD || 'postgres',
-    database: process.env.DB_DATABASE_NAME || 'postgres',
+    database: process.env.POSTGRES_DB || 'postgres',
   },
   port: process.env.API_PORT || 3001,
   redis: {
@@ -20,6 +20,4 @@ export default {
     port: process.env.REDIS_PORT || 6379,
     ttl: Number(process.env.TTL) || 14400,
   },
-  frontUrl: process.env.FRONT_URL || 'http://localhost:8000',
-  backUrl: process.env.BACK_URL || 'http://localhost:8000',
 };
