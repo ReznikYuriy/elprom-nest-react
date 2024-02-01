@@ -82,7 +82,8 @@ services:
     ports:
       - 80:80
     volumes:
-      - ./nginx/nginx.conf.dev:/etc/nginx/conf.d/nginx.conf
+      - ./nginx/nginx.conf.prod:/etc/nginx/conf.d/nginx.conf
+      - ./nginx/ssl_certs:/etc/nginx/ssl_certs
     depends_on:
       - frontend
       - nestjs-api
