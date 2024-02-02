@@ -12,18 +12,23 @@ server {
     listen 443 ssl;
     listen [::]:443 ssl;
 
-    server_name el-prom.docker.local;
+    server_name 192.168.1.197;
 
     ssl_certificate /etc/nginx/ssl_certs/server.crt;
     ssl_certificate_key /etc/nginx/ssl_certs/server.key;
+
+    # Improve HTTPS performance with session resumption
+  	ssl_session_cache shared:SSL:10m;
+  	ssl_session_timeout 10m;
 
     # Enable HSTS
     add_header Strict-Transport-Security "max-age=31536000; includeSubDomains; preload";
 
     # SSL settings
     ssl_protocols TLSv1.2 TLSv1.3;
-    ssl_prefer_server_ciphers off;
-    ssl_ciphers 'TLS_AES_128_GCM_SHA256:TLS_AES_256_GCM_SHA384:TLS_CHACHA20_POLY1305_SHA256:ECDHE-RSA-AES128-GCM-SHA256:ECDHE-RSA-AES256-GCM-SHA384';
+    ssl_prefer_server_ciphers on;
+    ssl_ciphers "ECDHE-ECDSA-AES256-GCM-SHA384:ECDHE-RSA-AES256-GCM-SHA384:ECDHE-ECDSA-CHACHA20-POLY1305:ECDHE-RSA-CHACHA20-POLY1305:ECDHE-ECDSA-AES256-SHA384:ECDHE-RSA-AES256-SHA384";
+    # ssl_ciphers 'TLS_AES_128_GCM_SHA256:TLS_AES_256_GCM_SHA384:TLS_CHACHA20_POLY1305_SHA256:ECDHE-RSA-AES128-GCM-SHA256:ECDHE-RSA-AES256-GCM-SHA384';
 
     # Other SSL settings can be added here
 
