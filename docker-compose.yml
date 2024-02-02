@@ -81,6 +81,7 @@ services:
     container_name: elprom_nginx
     ports:
       - 80:80
+      - 443:443
     volumes:
       - ./nginx/nginx.conf.prod:/etc/nginx/conf.d/nginx.conf
       - ./nginx/ssl_certs:/etc/nginx/ssl_certs
