@@ -8,6 +8,7 @@ import ProductModel from './product/model/product.model';
 import { BullModule } from '@nestjs/bull';
 import { UserModule } from './user/user.module';
 import { AuthModule } from './auth/auth.module';
+import UserModel from './user/model/user.schema';
 
 @Module({
   imports: [
@@ -16,7 +17,7 @@ import { AuthModule } from './auth/auth.module';
       dialect: 'postgres',
       autoLoadModels: true,
       synchronize: true,
-      models: [CategoryModel, ProductModel],
+      models: [CategoryModel, ProductModel, UserModel],
     }),
     BullModule.forRoot({
       redis: {
