@@ -13,11 +13,11 @@ async function bootstrap() {
   app.enableCors();
 
   const config = new DocumentBuilder()
-    //.addBearerAuth()
     .setTitle('El-prom api')
     .setDescription('')
     .setVersion('2.0')
     .addTag('El-prom')
+    .addBearerAuth()
     .build();
   const document = SwaggerModule.createDocument(app, config);
   SwaggerModule.setup('api', app, document);

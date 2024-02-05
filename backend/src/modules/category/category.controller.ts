@@ -6,11 +6,16 @@ import {
   Patch,
   Param,
   Delete,
+  UseGuards,
 } from '@nestjs/common';
 import { CategoryService } from './service/category.service';
 import { CreateCategoryDto } from './dto/create.category.dto';
 import { UpdateCategoryDto } from './dto/update.category.dto';
 import { ApiOkResponse, ApiTags } from '@nestjs/swagger';
+import { RoleGuard } from '../auth/guards/role.guard';
+import { Roles } from '../auth/guards/roles.guard';
+import { RolesEnum } from '../user/enums/user.role';
+import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
 
 @ApiTags('category')
 @Controller('category')
@@ -21,6 +26,8 @@ export class CategoryController {
     status: 201,
     type: CreateCategoryDto,
   })
+  @UseGuards(JwtAuthGuard, RoleGuard)
+  @Roles(RolesEnum.ADMIN)
   @Post()
   async create(@Body() createCategoryDto: CreateCategoryDto) {
     return this.categoryService.create(createCategoryDto);
@@ -57,6 +64,8 @@ export class CategoryController {
     status: 200,
     type: CreateCategoryDto,
   })
+  @UseGuards(JwtAuthGuard, RoleGuard)
+  @Roles(RolesEnum.ADMIN)
   @Patch(':id')
   update(
     @Param('id') id: string,
@@ -68,6 +77,8 @@ export class CategoryController {
   @ApiOkResponse({
     status: 200,
   })
+  @UseGuards(JwtAuthGuard, RoleGuard)
+  @Roles(RolesEnum.ADMIN)
   @Delete(':id')
   remove(@Param('id') id: string) {
     return this.categoryService.remove(id);
