@@ -20,4 +20,13 @@ export default {
     port: process.env.REDIS_PORT || 6379,
     ttl: Number(process.env.TTL) || 14400,
   },
+  admin: {
+    name: process.env.DEFAULT_ADMIN_NAME,
+    email: process.env.DEFAULT_ADMIN_EMAIL,
+    password: process.env.DEFAULT_ADMIN_PASSWORD,
+  },
+  jwt: {
+    secret: process.env.JWT_SECRET_KEY,
+    expiresIn: process.env.JWT_EXPIRATION_TIME,
+  },
 };

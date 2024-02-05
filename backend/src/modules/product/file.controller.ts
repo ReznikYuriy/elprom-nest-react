@@ -6,11 +6,19 @@ import {
   UploadedFile,
   Header,
   StreamableFile,
+  UseGuards,
 } from '@nestjs/common';
-import { ApiBody, ApiConsumes, ApiOkResponse, ApiTags } from '@nestjs/swagger';
+import {
+  ApiBody,
+  ApiConsumes,
+  ApiOkResponse,
+  ApiTags,
+  ApiBearerAuth,
+} from '@nestjs/swagger';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { XLSService } from './service/xls.service';
 import { ProductService } from './service/product.service';
+import { AuthGuard } from '../auth/guards/auth.guard';
 
 @ApiTags('file')
 @Controller('file')
@@ -36,6 +44,8 @@ export class FileController {
 
   //@UseGuards(JwtAuthGuard, RoleGuard)
   //@Roles(RolesEnum.USER)
+  @ApiBearerAuth()
+  @UseGuards(AuthGuard)
   @Post('parse/xlsx')
   @ApiConsumes('multipart/form-data')
   @ApiBody({

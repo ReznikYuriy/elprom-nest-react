@@ -6,6 +6,8 @@ import CategoryModel from './category/model/category.model';
 import configs from 'src/configs';
 import ProductModel from './product/model/product.model';
 import { BullModule } from '@nestjs/bull';
+import { UserModule } from './user/user.module';
+import { AuthModule } from './auth/auth.module';
 
 @Module({
   imports: [
@@ -24,6 +26,8 @@ import { BullModule } from '@nestjs/bull';
     }),
     CategoryModule,
     ProductModule,
+    UserModule,
+    AuthModule,
   ],
   controllers: [],
   providers: [],
