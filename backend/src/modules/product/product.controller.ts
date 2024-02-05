@@ -6,37 +6,26 @@ import {
   Patch,
   Param,
   Delete,
-  //  UseInterceptors,
-  //  UploadedFile,
-  //  Header,
-  //  StreamableFile,
   Query,
+  UseGuards,
 } from '@nestjs/common';
 import { ProductService } from './service/product.service';
 import { CreateProductDto } from './dto/create.product.dto';
 import { UpdateProductDto } from './dto/update.product.dto';
-import {
-  /* ApiBody, ApiConsumes, */ ApiOkResponse,
-  ApiTags,
-} from '@nestjs/swagger';
-//import { FileInterceptor } from '@nestjs/platform-express';
-//import { XLSService } from './service/xls.service';
+import { ApiOkResponse, ApiTags } from '@nestjs/swagger';
 import { SearchQueryDto } from './dto/search.query.dto';
+import { RoleGuard } from '../auth/guards/role.guard';
+import { RolesEnum } from '../user/enums/user.role';
+import { Roles } from '../auth/guards/roles.guard';
+import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
 
 @ApiTags('product')
 @Controller('product')
 export class ProductController {
-  constructor(
-    private readonly productService: ProductService, //private readonly xlsService: XLSService,
-  ) {}
+  constructor(private readonly productService: ProductService) {}
 
-  /* @Get('get_pricelist')
-  @Header('Content-Type', 'application/xlsx')
-  @Header('Content-Disposition', 'attachment; filename="PriceList.xlsx"')
-  async getStaticCSVFile(): Promise<StreamableFile> {
-    return this.xlsService.getXlsPriceList();
-  } */
-
+  @UseGuards(JwtAuthGuard, RoleGuard)
+  @Roles(RolesEnum.ADMIN)
   @Post()
   async create(@Body() createProductDto: CreateProductDto) {
     return this.productService.create(createProductDto);
@@ -73,6 +62,8 @@ export class ProductController {
     return await this.productService.getWarehouseUpdDate();
   }
 
+  @UseGuards(JwtAuthGuard, RoleGuard)
+  @Roles(RolesEnum.ADMIN)
   @Patch(':id')
   async update(
     @Param('id') id: string,
@@ -81,33 +72,10 @@ export class ProductController {
     return this.productService.update(id, updateProductDto);
   }
 
+  @UseGuards(JwtAuthGuard, RoleGuard)
+  @Roles(RolesEnum.ADMIN)
   @Delete(':id')
   async remove(@Param('id') id: string) {
     return this.productService.remove(id);
   }
-
-  //@UseGuards(JwtAuthGuard, RoleGuard)
-  //@Roles(RolesEnum.USER)
-  /* @Post('parse/xlsx')
-  @ApiConsumes('multipart/form-data')
-  @ApiBody({
-    schema: {
-      type: 'object',
-      properties: {
-        file: {
-          type: 'string',
-          format: 'binary',
-        },
-      },
-    },
-  })
-  @ApiOkResponse({
-    status: 200,
-  })
-  @UseInterceptors(FileInterceptor('file'))
-  async uploadUnitedXLSX(
-    @UploadedFile() file: Express.Multer.File,
-  ): Promise<any> {
-    return this.xlsService.uploadXLSFile(file);
-  } */
 }
