@@ -21,12 +21,12 @@ export default {
     ttl: Number(process.env.TTL) || 14400,
   },
   admin: {
-    name: process.env.DEFAULT_ADMIN_NAME,
-    email: process.env.DEFAULT_ADMIN_EMAIL,
-    password: process.env.DEFAULT_ADMIN_PASSWORD,
+    name: process.env.DEFAULT_ADMIN_NAME || 'admin',
+    email: process.env.DEFAULT_ADMIN_EMAIL || 'admin@admin.com',
+    password: process.env.DEFAULT_ADMIN_PASSWORD || 'admin',
   },
   jwt: {
-    secret: process.env.JWT_SECRET_KEY,
-    expiresIn: process.env.JWT_EXPIRATION_TIME,
+    secret: process.env.JWT_SECRET_KEY || 'dev-secret',
+    expiresIn: process.env.JWT_EXPIRATION_TIME || 986400,
   },
 };
