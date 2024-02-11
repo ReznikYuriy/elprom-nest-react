@@ -1,5 +1,5 @@
 import { Injectable, Logger, OnModuleInit } from '@nestjs/common';
-import configs from 'src/configs';
+import configs from '../../../configs';
 import CreateUserDto from '../dto/create.user.dto';
 import UsersRepository from '../repositories/users.repository';
 import { hashSync } from 'bcryptjs';

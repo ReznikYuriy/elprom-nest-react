@@ -12,7 +12,7 @@ import {
 import { ProductService } from './service/product.service';
 import { CreateProductDto } from './dto/create.product.dto';
 import { UpdateProductDto } from './dto/update.product.dto';
-import { ApiOkResponse, ApiTags } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiOkResponse, ApiTags } from '@nestjs/swagger';
 import { SearchQueryDto } from './dto/search.query.dto';
 import { RoleGuard } from '../auth/guards/role.guard';
 import { RolesEnum } from '../user/enums/user.role';
@@ -24,6 +24,7 @@ import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
 export class ProductController {
   constructor(private readonly productService: ProductService) {}
 
+  @ApiBearerAuth()
   @UseGuards(JwtAuthGuard, RoleGuard)
   @Roles(RolesEnum.ADMIN)
   @Post()
@@ -62,6 +63,7 @@ export class ProductController {
     return await this.productService.getWarehouseUpdDate();
   }
 
+  @ApiBearerAuth()
   @UseGuards(JwtAuthGuard, RoleGuard)
   @Roles(RolesEnum.ADMIN)
   @Patch(':id')
@@ -72,6 +74,7 @@ export class ProductController {
     return this.productService.update(id, updateProductDto);
   }
 
+  @ApiBearerAuth()
   @UseGuards(JwtAuthGuard, RoleGuard)
   @Roles(RolesEnum.ADMIN)
   @Delete(':id')

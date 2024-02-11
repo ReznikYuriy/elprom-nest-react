@@ -11,7 +11,7 @@ import {
 import { CategoryService } from './service/category.service';
 import { CreateCategoryDto } from './dto/create.category.dto';
 import { UpdateCategoryDto } from './dto/update.category.dto';
-import { ApiOkResponse, ApiTags } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiOkResponse, ApiTags } from '@nestjs/swagger';
 import { RoleGuard } from '../auth/guards/role.guard';
 import { Roles } from '../auth/guards/roles.guard';
 import { RolesEnum } from '../user/enums/user.role';
@@ -26,6 +26,7 @@ export class CategoryController {
     status: 201,
     type: CreateCategoryDto,
   })
+  @ApiBearerAuth()
   @UseGuards(JwtAuthGuard, RoleGuard)
   @Roles(RolesEnum.ADMIN)
   @Post()
@@ -64,6 +65,7 @@ export class CategoryController {
     status: 200,
     type: CreateCategoryDto,
   })
+  @ApiBearerAuth()
   @UseGuards(JwtAuthGuard, RoleGuard)
   @Roles(RolesEnum.ADMIN)
   @Patch(':id')
@@ -77,6 +79,7 @@ export class CategoryController {
   @ApiOkResponse({
     status: 200,
   })
+  @ApiBearerAuth()
   @UseGuards(JwtAuthGuard, RoleGuard)
   @Roles(RolesEnum.ADMIN)
   @Delete(':id')
