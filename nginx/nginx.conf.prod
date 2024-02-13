@@ -3,7 +3,7 @@ server {
     listen [::]:80;
 
     # server_name 192.168.1.197;
-    server_name 91.239.232.87;
+    server_name el-prom.com.ua;
     
     # Redirect all HTTP requests to HTTPS
     return 301 https://$host$request_uri;
@@ -14,7 +14,7 @@ server {
     listen [::]:443 ssl;
 
     # server_name 192.168.1.197;
-    server_name 91.239.232.87;
+    server_name el-prom.com.ua;
 
     ssl_certificate /etc/nginx/ssl_certs/server.crt;
     ssl_certificate_key /etc/nginx/ssl_certs/server.key;
