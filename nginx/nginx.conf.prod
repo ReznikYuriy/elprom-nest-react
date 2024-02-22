@@ -3,6 +3,11 @@ server {
     listen [::]:80;
 
     server_name el-prom.docker.local;
+
+    location /.well-known/acme-challenge/ {
+        root /etc/nginx/ssl_certs/acme; # Замените путь на фактический путь к корневой директории вашего веб-сайта
+        default_type "text/plain";
+    }
     
     # Redirect all HTTP requests to HTTPS
     return 301 https://$host$request_uri;
