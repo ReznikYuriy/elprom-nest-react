@@ -1,0 +1,15 @@
+export enum RouteEnum {
+  ROOT = "/",
+  SIGN_IN = "/sign-in",
+  SIGN_UP = "/sign-up",
+  NOT_FOUND = "/not-found",
+  PRODUCTS = "/products",
+  ADMIN = "/admin",
+  CONTACTS = "/contacts",
+  PURCHASES = "/purchases",
+  DELIVERY = "/delivery",
+  CATEGORIES_$ID = "/categories/:id",
+  CATEGORIES = "/categories/",
+  PRODUCT_DETAILS = "/product-details/",
+  PRODUCT_DETAILS_$ID = "/product-details/:id",
+}
