@@ -82,20 +82,39 @@ services:
       - el-prom-network
 
   nginx:
-    image: nginx:stable-alpine
-    container_name: elprom_nginx
-    ports:
-      - 80:80
-      - 443:443
-    volumes:
-      - ./nginx/nginx.conf.prod:/etc/nginx/conf.d/nginx.conf
-      - ./nginx/ssl_certs:/etc/nginx/ssl_certs
-    depends_on:
-      - frontend
-      - nestjs-api
-      - pgadmin
-    networks:
-      - el-prom-network
+        build: .
+        image: umputun/nginx-le:latest
+        hostname: nginx
+        restart: always
+        container_name: nginx
+
+        logging:
+          driver: json-file
+          options:
+              max-size: "10m"
+              max-file: "5"
+
+        volumes:
+            - ./nginx/ssl_certs:/etc/nginx/ssl
+            - ./nginx/nginx.conf.dev:/etc/nginx/service.conf
+        ports:
+            - 80:80
+            - 443:443
+
+        environment:
+            - TZ=UTC
+            - LETSENCRYPT=true
+            - LE_EMAIL=mail@el-prom.com.ua
+            - LE_FQDN=www.el-prom.com.ua,el-prom.com.ua
+            #- SSL_CERT=le-crt.pem
+            #- SSL_KEY=le-key.pem
+            #- SSL_CHAIN_CERT=le-chain-crt.pem
+        depends_on:
+          - frontend
+          - nestjs-api
+          - pgadmin
+        networks:
+          - el-prom-network
 
 networks:
   el-prom-network:
