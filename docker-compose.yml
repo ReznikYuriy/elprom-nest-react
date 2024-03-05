@@ -6,15 +6,15 @@ services:
       dockerfile: Dockerfile.build
     container_name: elprom-front
     restart: "unless-stopped"
-    environment:
-      REACT_APP_API_URL: ${REACT_APP_API_URL}
+    #environment:
+    #  REACT_APP_API_URL: ${REACT_APP_API_URL}
     volumes:
       - /frontend/node_modules
       - ./frontend/src:/user/src/app/src
     #stdin_open: true
     #tty: true
-    env_file:
-      - .env
+    #env_file:
+    #  - .env
     networks:
       - el-prom-network
       
@@ -98,7 +98,7 @@ services:
 
         volumes:
             - ./nginx-le/etc/ssl:/etc/nginx/ssl
-            - ./nginx-le/etc/nginx.conf.dev:/etc/nginx/service.conf
+            - ./nginx-le/etc/nginx.conf:/etc/nginx/service.conf
         ports:
             - 80:80
             - 443:443
@@ -108,9 +108,6 @@ services:
             - LETSENCRYPT=true
             - LE_EMAIL=mail@el-prom.com.ua
             - LE_FQDN=www.el-prom.com.ua,el-prom.com.ua
-            #- SSL_CERT=le-crt.pem
-            #- SSL_KEY=le-key.pem
-            #- SSL_CHAIN_CERT=le-chain-crt.pem
         depends_on:
           - frontend
           - nestjs-api
