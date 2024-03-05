@@ -82,7 +82,9 @@ services:
       - el-prom-network
 
   nginx:
-        build: .
+        build:
+          context: ./nginx-le
+          dockerfile: Dockerfile
         image: umputun/nginx-le:latest
         hostname: nginx
         restart: always
