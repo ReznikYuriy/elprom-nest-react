@@ -95,8 +95,8 @@ services:
               max-file: "5"
 
         volumes:
-            - ./nginx/ssl_certs:/etc/nginx/ssl
-            - ./nginx/nginx.conf.dev:/etc/nginx/service.conf
+            - ./nginx-le/etc/ssl:/etc/nginx/ssl
+            - ./nginx-le/etc/nginx.conf.dev:/etc/nginx/service.conf
         ports:
             - 80:80
             - 443:443
