@@ -38,6 +38,7 @@ const MatTable: React.FC = () => {
     metaAdder(`name="keywords"`, `${activeCategory.name}, купить ${activeCategory.name}, ${activeCategory.name} Украина, ${activeCategory.name} el-prom`);
 
     dispatch<any>(ProductsActionCreator.getProductsAsync(id!));
+    setPage(0);
     if (!activeCategory) {
       dispatch<any>(ProductsActionCreator.setActiveCategoryAsync(id!));
     }
