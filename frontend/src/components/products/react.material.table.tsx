@@ -54,6 +54,7 @@ const MatTable: React.FC = () => {
   };
 
   const data = productsToTableData(products);
+  if (data?.length < page * rowsPerPage) { setPage(0); }
 
   if (dataStatusProd === DataStatus.PENDING || !products) {
     return <BackdropComponent />;
