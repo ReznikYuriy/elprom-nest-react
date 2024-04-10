@@ -6,8 +6,9 @@ jobs:
     steps:
       - name: Get repo code!
         uses: actions/checkout@v3
+      - name: Goto backend folder
+        run: cd backend
       - name: Install backend dependencies
-        run: 
-          cd backend
-          npm install
-          npm run test
+        run: npm install
+      - name: Run backend tests
+        run: npm run test
