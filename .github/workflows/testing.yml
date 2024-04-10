@@ -13,6 +13,6 @@ jobs:
         with:
           node-version: '20'
       - name: Install backend dependencies
-        run: npm install
+        run: npm install --prefix backend
       - name: Run backend tests
         run: npm run test
