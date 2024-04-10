@@ -16,3 +16,7 @@ jobs:
         run: npm install --prefix backend
       #- name: Run backend tests
       #  run: npm run test --prefix backend
+      - name: Build Docker Compose
+        run: docker compose build
+      - name: Run Docker Compose
+        run: docker compose build
