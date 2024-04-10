@@ -15,4 +15,4 @@ jobs:
       - name: Install backend dependencies
         run: npm install --prefix backend
       - name: Run backend tests
-        run: npm run test
+        run: npm run test --prefix backend
