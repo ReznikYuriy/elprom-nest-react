@@ -23,9 +23,9 @@ services:
     container_name: postgres
     restart: "no"
     environment:
-      POSTGRES_PASSWORD: ${{secrets.POSTGRES_PASSWORD}}
-      POSTGRES_USER: ${{secrets.POSTGRES_USER}}
-      POSTGRES_DB: ${{secrets.POSTGRES_DB}}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_DB: ${POSTGRES_DB}
     networks:
       - el-prom-network
     volumes:
@@ -38,8 +38,8 @@ services:
     networks:
       - el-prom-network
     environment:
-      PGADMIN_DEFAULT_EMAIL: ${{secrets.PGADMIN_DEFAULT_EMAIL}}
-      PGADMIN_DEFAULT_PASSWORD: ${{secrets.PGADMIN_DEFAULT_PASSWORD}}
+      PGADMIN_DEFAULT_EMAIL: ${PGADMIN_DEFAULT_EMAIL}
+      PGADMIN_DEFAULT_PASSWORD: ${PGADMIN_DEFAULT_PASSWORD}
     #ports:
     #  - 8080:80
     depends_on:
@@ -60,19 +60,19 @@ services:
     container_name: nestjs-api
     restart: "always"
     environment:
-      DB_HOST: ${{secrets.DB_HOST}}
-      DB_PORT: ${{secrets.DB_PORT}}
-      DB_USERNAME: ${{secrets.DB_USERNAME}}
-      DB_PASSWORD: ${{secrets.DB_PASSWORD}}
-      POSTGRES_DB: ${{secrets.POSTGRES_DB}}
-      REDIS_HOST: ${{secrets.REDIS_HOST}}
-      REDIS_PORT: ${{secrets.REDIS_PORT}}
-      TTL: ${{secrets.TTL}}
-      DEFAULT_ADMIN_NAME: ${{secrets.DEFAULT_ADMIN_NAME}}
-      DEFAULT_ADMIN_EMAIL: ${{secrets.DEFAULT_ADMIN_EMAIL}}
-      DEFAULT_ADMIN_PASSWORD: ${{secrets.DEFAULT_ADMIN_PASSWORD}}
-      JWT_SECRET_KEY: ${{secrets.JWT_SECRET_KEY}}
-      JWT_EXPIRATION_TIME: ${{secrets.JWT_EXPIRATION_TIME}}
+      DB_HOST: ${DB_HOST}
+      DB_PORT: ${DB_PORT}
+      DB_USERNAME: ${DB_USERNAME}
+      DB_PASSWORD: ${DB_PASSWORD}
+      POSTGRES_DB: ${POSTGRES_DB}
+      REDIS_HOST: ${REDIS_HOST}
+      REDIS_PORT: ${REDIS_PORT}
+      TTL: ${TTL}
+      DEFAULT_ADMIN_NAME: ${DEFAULT_ADMIN_NAME}
+      DEFAULT_ADMIN_EMAIL: ${DEFAULT_ADMIN_EMAIL}
+      DEFAULT_ADMIN_PASSWORD: ${DEFAULT_ADMIN_PASSWORD}
+      JWT_SECRET_KEY: ${JWT_SECRET_KEY}
+      JWT_EXPIRATION_TIME: ${JWT_EXPIRATION_TIME}
     depends_on:
       - postgres
     volumes:
