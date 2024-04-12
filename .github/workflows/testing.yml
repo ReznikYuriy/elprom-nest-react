@@ -16,7 +16,7 @@ jobs:
         run: npm install --prefix backend
       #- name: Run backend tests
       #  run: npm run test --prefix backend
-      - name: Build the stack
+      - name: Add secrets to envirnment.
         env:
           POSTGRES_PASSWORD: ${{secrets.POSTGRES_PASSWORD}}
           POSTGRES_USER: ${{secrets.POSTGRES_USER}}
@@ -36,5 +36,11 @@ jobs:
           JWT_SECRET_KEY: ${{secrets.JWT_SECRET_KEY}}
           JWT_EXPIRATION_TIME: ${{secrets.JWT_EXPIRATION_TIME}}
         run: |
-          docker-compose -f docker-compose-github-actions.yml build
-          docker-compose -f docker-compose-github-actions.yml up
+          docker-compose -f docker-compose-github-actions.yml pull
+      - name: Create a dummy file on server
+        uses: appleboy/ssh-action@v1.0.3
+        with:
+          host: 91.239.232.87
+          username: ghactions
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          script: whoami
