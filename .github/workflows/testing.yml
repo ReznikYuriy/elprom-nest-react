@@ -38,10 +38,10 @@ jobs:
         run: |
           docker-compose -f docker-compose-github-actions.yml pull
       - name: Create a dummy file on server
-        uses: appleboy/ssh-action@v1.0.3
+        uses: appleboy/ssh-action@v1.0.0
         with:
-          host: 91.239.232.87
-          username: ghactions
-          key: 'ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQDgv0/q3EQhtOrAUnfSMroy/qNpWF0VjKKY1onUSuBy1MJX3/NjpEc0nAJnqNH70HUOUvV+MBDEvEtPDLEPoAWjFH8xry6ozG/kaOwodqbMT40axbphvOGHlQSa4ZLvJzhYTa3U+02RYAiJFN+JW2xB7GeqpPo4hY2NyLSvNxOz9C8QGZXXWxW1Kz7nfPwWvD9SnuElrfq8kkniyyfNoxW8j7eSrO4odawdKfI3LKNN4tNo8ACOc2SN8A+t6T9tgWSj8PNlAqyOTPX2I/rqLLXOfqccWFN9uSqAqe/tv7HiP+RB2fZ7sO5NOJehQakx4ve+tx/LTDqPSHyUGT/xseT9auS383ftvJnfNcsjtpFCL8h72LOcihznQL/cE1ERTsYBMqMwpMgF7y6twpBJNpWbignOxHkDiDgwhthHRDPk97EyfoKXrUbMZ0sZ+mfdpaul2OhnGjccrluu4s2G0HWLNjDfl+vlP3SQI8USL7i/Jz9/ezf9hzMULvySDQ+hS+1WLmW7cHZWUNylL2/ABFRHWwXpCWJgzBRYbuDrN0o3ON/n5HjGSudo5dcHXqhIRFAVvjn67Qqy9RuYq55xz8R3TKyOAsuSTiVg4JyMp5WcH4Pq0OA+QuwLnbmSQsEiGIwtbKwDTO+ajEcxW3QdvWX6Grc9z98+FPHq3qHHludyhQ== ghactions'
+          host: ${{ secrets.SSH_HOST }}
+          username: ${{ secrets.SSH_USERNAME }}
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
           port: 22
           script: whoami
