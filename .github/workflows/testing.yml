@@ -44,4 +44,4 @@ jobs:
           username: ${{ secrets.SSH_USERNAME }}
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           port: 22
-          script: cd /home/ghactions/test/dev && git pull https://ReznikYuriy:${{ secrets.ACTION_TOKEN }}@github.com/ReznikYuriy/elprom-nest-react.git
+          script: cd /home/ghactions/dev && git pull https://ReznikYuriy:${{ secrets.ACTION_TOKEN }}@github.com/ReznikYuriy/elprom-nest-react.git dev
