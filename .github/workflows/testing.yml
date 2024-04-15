@@ -47,4 +47,4 @@ jobs:
           script: |
             cd /home/ghactions/dev 
             echo ${{ secrets.SUDO_PSWD }} | sudo -S git pull origin add_github_actions
-            docker compose build
+            sudo -S docker compose build
