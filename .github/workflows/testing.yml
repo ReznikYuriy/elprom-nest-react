@@ -37,8 +37,8 @@ jobs:
       #    JWT_EXPIRATION_TIME: ${{secrets.JWT_EXPIRATION_TIME}}
       #  run: |
       #    docker-compose -f docker-compose-github-actions.yml pull
-      - name: Create a dummy file on server
-        uses: appleboy/ssh-action@v1.0.3
+      - name: Deploy to server
+        uses: appleboy/ssh-action@vmaster
         with:
           host: ${{ secrets.SSH_HOST }}
           username: ${{ secrets.SSH_USERNAME }}
@@ -47,4 +47,6 @@ jobs:
           script: |
             cd /home/ghactions/dev 
             echo ${{ secrets.SUDO_PSWD }} | sudo -S git pull origin add_github_actions
-            sudo -S docker compose build
+            sudo -S docker compose down
+            docker system prune -f
+            sudo -S docker compose up --build -d
