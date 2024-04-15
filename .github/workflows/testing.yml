@@ -48,5 +48,5 @@ jobs:
             cd /home/ghactions/dev 
             echo ${{ secrets.SUDO_PSWD }} | sudo -S git pull origin add_github_actions
             sudo -S docker compose down
-            docker system prune -f
-            sudo -S docker compose up --build -d
+            sudo -S docker compose build
+            sudo -S docker compose up
