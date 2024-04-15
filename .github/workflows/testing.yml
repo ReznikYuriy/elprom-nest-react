@@ -46,4 +46,4 @@ jobs:
           port: 22
           script: |
             cd /home/ghactions/dev 
-            echo ${{ secrets.SUDO_PSWD }} | sudo -S git pull origin dev
+            echo ${{ secrets.SUDO_PSWD }} | sudo -S git pull origin add_github_actions
