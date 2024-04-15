@@ -6,14 +6,14 @@ jobs:
     steps:
       - name: Get repo code!
         uses: actions/checkout@v4
-      - name: Goto backend folder
-        run: cd backend
+      #- name: Goto backend folder
+      #  run: cd backend
       #- name: Установка Node.js
       #  uses: actions/setup-node@v2
       #  with:
       #    node-version: '20'
-      - name: Install backend dependencies
-        run: npm install --prefix backend
+      #- name: Install backend dependencies
+      #  run: npm install --prefix backend
       #- name: Run backend tests
       #  run: npm run test --prefix backend
       #- name: Add secrets to envirnment.
@@ -44,4 +44,4 @@ jobs:
           username: ${{ secrets.SSH_USERNAME }}
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           port: 22
-          script: cd /home/ghactions/test/dev && git push origin dev
+          script: cd /home/ghactions/test/dev && git pull https://ReznikYuriy:${{ secrets.ACTION_TOKEN }}@github.com/ReznikYuriy/elprom-nest-react.git
