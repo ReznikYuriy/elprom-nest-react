@@ -1,0 +1,24 @@
+name: Dev Deploy Workflow
+on: 
+  pull_request:
+    branches:
+      - 'dev'
+jobs:
+  deploy:
+    runs-on: ubuntu-22.04
+    steps:
+      - name: Get repo code
+        uses: actions/checkout@v4
+      - name: Deploy dev branch to server
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.SSH_HOST }}
+          username: ${{ secrets.SSH_USERNAME }}
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          port: 22
+          script: |
+            cd /home/ghactions/dev 
+            echo ${{ secrets.SUDO_PSWD }} | sudo -S git pull origin dev
+            sudo -S docker compose down
+            sudo -S docker compose build
+            sudo -S docker compose up
