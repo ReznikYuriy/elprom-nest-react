@@ -1,6 +1,7 @@
 name: Dev Deploy Workflow
 on: 
   pull_request:
+    types: [closed]
     branches:
       - 'dev'
 jobs:
@@ -20,5 +21,4 @@ jobs:
             cd /home/ghactions/dev 
             echo ${{ secrets.SUDO_PSWD }} | sudo -S git pull origin dev
             sudo -S docker compose down
-            sudo -S docker compose build
-            sudo -S docker compose up
+            sudo -S docker compose up --build -d
