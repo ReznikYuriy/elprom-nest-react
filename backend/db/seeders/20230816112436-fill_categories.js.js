@@ -155,6 +155,12 @@ module.exports = {
         updatedAt: new Date(),
       },
       {
+        id: 'relay',
+        name: 'Рэле',
+        createdAt: new Date(),
+        updatedAt: new Date(),
+      },
+      {
         id: 'thermistors',
         name: 'Терморезисторы',
         createdAt: new Date(),

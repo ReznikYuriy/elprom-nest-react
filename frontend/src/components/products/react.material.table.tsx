@@ -30,7 +30,7 @@ const MatTable: React.FC = () => {
   const { id } = useParams<{ id: string }>();
 
   const [page, setPage] = React.useState(0);
-  const [rowsPerPage, setRowsPerPage] = React.useState(10);
+  const [rowsPerPage, setRowsPerPage] = React.useState(5);
 
   React.useEffect(() => {
     document.title = `${activeCategory.name} Electroprom`;
@@ -38,6 +38,7 @@ const MatTable: React.FC = () => {
     metaAdder(`name="keywords"`, `${activeCategory.name}, купить ${activeCategory.name}, ${activeCategory.name} Украина, ${activeCategory.name} el-prom`);
 
     dispatch<any>(ProductsActionCreator.getProductsAsync(id!));
+    setPage(0);
     if (!activeCategory) {
       dispatch<any>(ProductsActionCreator.setActiveCategoryAsync(id!));
     }
@@ -53,6 +54,7 @@ const MatTable: React.FC = () => {
   };
 
   const data = productsToTableData(products);
+  if (data?.length < page * rowsPerPage) { setPage(0); }
 
   if (dataStatusProd === DataStatus.PENDING || !products) {
     return <BackdropComponent />;
@@ -111,7 +113,7 @@ const MatTable: React.FC = () => {
           </Table>
         </TableContainer>
         <TablePagination
-          rowsPerPageOptions={[10, 25, 100]}
+          rowsPerPageOptions={[5, 10, 50]}
           component="div"
           count={data.length}
           rowsPerPage={rowsPerPage}
