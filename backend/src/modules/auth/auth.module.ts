@@ -9,6 +9,8 @@ import { LocalAuthGuard } from './guards/local-auth.guard';
 import { LocalStrategy } from './strategies/local.strategy';
 import { AuthGuard } from './guards/auth.guard';
 import { JwtStrategy } from './strategies/jwt.strategy';
+import { GoogleStrategy } from './strategies/google.strategy';
+import { GoogleOAuthGuard } from './guards/google.oauth.guard';
 
 @Module({
   imports: [
@@ -28,7 +30,9 @@ import { JwtStrategy } from './strategies/jwt.strategy';
     LocalAuthGuard,
     LocalStrategy,
     JwtStrategy,
+    GoogleStrategy,
     AuthGuard,
+    GoogleOAuthGuard,
   ],
   exports: [JwtStrategy],
 })

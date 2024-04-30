@@ -4,6 +4,7 @@ import { compare } from 'bcryptjs';
 import configs from '../../../configs';
 import UserModel from '../../../modules/user/model/user.schema';
 import { UserService } from '../../../modules/user/services/user.service';
+import { RolesEnum } from 'src/modules/user/enums/user.role';
 
 @Injectable()
 export class AuthService {
@@ -22,6 +23,27 @@ export class AuthService {
       isAuthorized: true,
       accessToken,
     };
+  }
+
+  handlerLogin() {
+    return 'handlerLogin';
+  }
+
+  async googleLogin(user: UserModel) {
+    let dbUser = await this.usersService.findOneByEmail(user?.email);
+    if (!dbUser) {
+      dbUser = await this.usersService.createUser({
+        name: user?.name,
+        email: user?.email,
+        password: 'default_password',
+        role: RolesEnum.USER,
+      });
+    }
+    const payload = {
+      name: dbUser?.name,
+      email: dbUser?.email,
+    };
+    return this.jwtService.sign(payload, configs.jwt);
   }
 
   async validateUser(email: string, password: string) {
