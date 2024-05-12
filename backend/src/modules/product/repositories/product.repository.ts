@@ -43,7 +43,7 @@ export default class ProductRepository {
     });
   }
 
-  async findById1C(id: number): Promise<ProductModel> {
+  async findById1C(id: string): Promise<ProductModel> {
     console.log({ id });
     return this.prisma.product.findFirst({ where: { product_id_1C: id } });
   }

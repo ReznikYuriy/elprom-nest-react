@@ -32,7 +32,7 @@ model Category{
 
 model Product{
   id    String @unique  @id
-  product_id_1C Int @unique
+  product_id_1C String @unique
   name  String
   tags String
   images String[]

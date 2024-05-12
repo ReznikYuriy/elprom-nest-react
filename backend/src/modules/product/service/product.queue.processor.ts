@@ -55,16 +55,18 @@ export class ProductQueueProcessor {
       ...job.data.productBody,
       discounts: [],
     };
+    const { category_id, ..._dto } = dto;
     try {
       const prodInDb = await this.productService.getById1c(dto.product_id_1C);
       if (!prodInDb) {
         await this.productService.create({
-          ...dto,
+          ..._dto,
           id: productIdCreator(
             job.data.productBody.name,
-            job.data.productBody.product_id_1C,
+            +job.data.productBody.product_id_1C,
           ),
-          category: { connect: { id: dto.category_id } },
+          discounts: [],
+          category: { connect: { id: category_id } },
         });
       } else if (!this.productService.compareProducts(dto, prodInDb)) {
         await this.productService.update(prodInDb.id, dto);

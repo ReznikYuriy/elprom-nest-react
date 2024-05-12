@@ -44,7 +44,7 @@ export class ProductService {
     return this.productRepo.delete(id);
   }
 
-  async getById1c(id: number) {
+  async getById1c(id: string) {
     return this.productRepo.findById1C(id);
   }
 
