@@ -2,12 +2,11 @@ import { Module } from '@nestjs/common';
 import { UserService } from './services/user.service';
 import { UserController } from './user.controller';
 import UsersRepository from './repositories/users.repository';
-import { SequelizeModule } from '@nestjs/sequelize';
-import User from './model/user.schema';
+import { PrismaModule } from '../prisma/prisma.module';
 
 @Module({
   //controllers: [UserController],
-  imports: [SequelizeModule.forFeature([User])],
+  imports: [PrismaModule],
   providers: [UserService, UsersRepository],
   exports: [UserService, UsersRepository],
 })

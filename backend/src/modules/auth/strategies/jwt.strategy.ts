@@ -2,7 +2,7 @@ import { ExtractJwt, Strategy } from 'passport-jwt';
 import { PassportStrategy } from '@nestjs/passport';
 import { Injectable, UnauthorizedException } from '@nestjs/common';
 import configs from '../../../configs';
-import UserModel from '../../../modules/user/model/user.schema';
+import { User } from '@prisma/client';
 import UsersRepository from '../../../modules/user/repositories/users.repository';
 
 @Injectable()
@@ -15,7 +15,7 @@ export class JwtStrategy extends PassportStrategy(Strategy, 'jwt') {
     });
   }
 
-  async validate(payload: any): Promise<UserModel | null> {
+  async validate(payload: any): Promise<User | null> {
     const { email } = payload;
 
     const user = await this.userRepository.findOneByEmail(email);

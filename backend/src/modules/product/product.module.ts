@@ -1,8 +1,6 @@
 import { Module } from '@nestjs/common';
 import { ProductService } from './service/product.service';
 import { ProductController } from './product.controller';
-import ProductModel from './model/product.model';
-import { SequelizeModule } from '@nestjs/sequelize';
 import ProductRepository from './repositories/product.repository';
 import { CategoryModule } from '../category/category.module';
 import configs from 'src/configs';
@@ -11,10 +9,11 @@ import { ProductQueueProcessor } from './service/product.queue.processor';
 import { XLSService } from './service/xls.service';
 import { FileController } from './file.controller';
 import { ZipService } from './service/zip.service';
+import { PrismaModule } from '../prisma/prisma.module';
 
 @Module({
   imports: [
-    SequelizeModule.forFeature([ProductModel]),
+    PrismaModule,
     BullModule.registerQueueAsync({
       name: 'product-queue',
       useFactory: () => ({

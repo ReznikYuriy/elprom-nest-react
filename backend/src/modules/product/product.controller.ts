@@ -18,6 +18,7 @@ import { RoleGuard } from '../auth/guards/role.guard';
 import { RolesEnum } from '../user/enums/user.role';
 import { Roles } from '../auth/guards/roles.guard';
 import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
+import { Prisma } from '@prisma/client';
 
 @ApiTags('product')
 @Controller('product')
@@ -28,7 +29,7 @@ export class ProductController {
   @UseGuards(JwtAuthGuard, RoleGuard)
   @Roles(RolesEnum.ADMIN)
   @Post()
-  async create(@Body() createProductDto: CreateProductDto) {
+  async create(@Body() createProductDto: Prisma.ProductCreateInput) {
     return this.productService.create(createProductDto);
   }
 
@@ -69,7 +70,7 @@ export class ProductController {
   @Patch(':id')
   async update(
     @Param('id') id: string,
-    @Body() updateProductDto: UpdateProductDto,
+    @Body() updateProductDto: Prisma.ProductUpdateInput,
   ) {
     return this.productService.update(id, updateProductDto);
   }

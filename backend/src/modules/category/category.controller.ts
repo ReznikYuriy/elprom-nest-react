@@ -16,6 +16,7 @@ import { RoleGuard } from '../auth/guards/role.guard';
 import { Roles } from '../auth/guards/roles.guard';
 import { RolesEnum } from '../user/enums/user.role';
 import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
+import { Prisma } from '@prisma/client';
 
 @ApiTags('category')
 @Controller('category')
@@ -30,7 +31,7 @@ export class CategoryController {
   @UseGuards(JwtAuthGuard, RoleGuard)
   @Roles(RolesEnum.ADMIN)
   @Post()
-  async create(@Body() createCategoryDto: CreateCategoryDto) {
+  async create(@Body() createCategoryDto: Prisma.CategoryCreateInput) {
     return this.categoryService.create(createCategoryDto);
   }
 

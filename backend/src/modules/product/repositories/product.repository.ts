@@ -1,47 +1,43 @@
 import { Injectable } from '@nestjs/common';
-import { InjectModel } from '@nestjs/sequelize';
-import ProductModel from '../model/product.model';
 import { CreateProductDto } from '../dto/create.product.dto';
 import { UpdateProductDto } from '../dto/update.product.dto';
-import { Op } from 'sequelize';
+import { PrismaService } from 'src/modules/prisma/prisma.service';
+import { Product as ProductModel, Prisma } from '@prisma/client';
 
 @Injectable()
 export default class ProductRepository {
-  constructor(
-    @InjectModel(ProductModel)
-    private readonly productSchema: typeof ProductModel,
-  ) {}
+  constructor(private readonly prisma: PrismaService) {}
 
-  async create(dto: CreateProductDto): Promise<ProductModel> {
-    return this.productSchema.create(dto);
+  async create(dto: Prisma.ProductCreateInput): Promise<ProductModel> {
+    return this.prisma.product.create({ data: dto });
   }
 
   async findAll(): Promise<ProductModel[]> {
-    return this.productSchema.findAll();
+    return this.prisma.product.findMany({});
   }
 
   async findAllNotNullQuantity(): Promise<ProductModel[]> {
-    return this.productSchema.findAll({
-      where: { quantity: { [Op.ne]: 0 } },
+    return this.prisma.product.findMany({
+      where: { quantity: { not: 0 } },
     });
   }
 
   async findAllByCategoryId(category_id: string): Promise<ProductModel[]> {
-    return this.productSchema.findAll({
-      where: { quantity: { [Op.ne]: 0 }, category_id },
+    return this.prisma.product.findMany({
+      where: { quantity: { not: 0 }, category_id },
     });
   }
 
   async findById(id: string): Promise<ProductModel> {
-    return this.productSchema.findByPk(id);
+    return this.prisma.product.findUnique({ where: { id } });
   }
 
   async findAllByName(name: string): Promise<ProductModel[]> {
-    return this.productSchema.findAll({
+    return this.prisma.product.findMany({
       where: {
-        quantity: { [Op.ne]: 0 },
+        quantity: { not: 0 },
         name: {
-          [Op.iLike]: `%${name}%`,
+          contains: name.toLowerCase(),
         },
       },
     });
@@ -49,29 +45,29 @@ export default class ProductRepository {
 
   async findById1C(id: number): Promise<ProductModel> {
     console.log({ id });
-    return this.productSchema.findOne({ where: { product_id_1C: id } });
+    return this.prisma.product.findFirst({ where: { product_id_1C: id } });
   }
 
-  async update(id: string, data: UpdateProductDto): Promise<ProductModel> {
-    const [, [updReq]] = await this.productSchema.update(
-      { ...data },
-      { where: { id }, returning: true },
-    );
-    return updReq;
+  async update(
+    id: string,
+    data: Prisma.ProductUpdateInput,
+  ): Promise<ProductModel> {
+    return this.prisma.product.update({
+      where: { id },
+      data: { ...data },
+    });
   }
 
   async delete(id: string) {
-    return this.productSchema.destroy({ where: { id } });
+    return this.prisma.product.delete({ where: { id } });
   }
 
-  async getWarehouseUpdDate(): Promise<ProductModel[]> {
-    return this.productSchema.findAll({
+  async getWarehouseUpdDate(): Promise<ProductModel> {
+    return this.prisma.product.findFirst({
       where: {
-        quantity: { [Op.ne]: 0 },
+        quantity: { not: 0 },
       },
-      attributes: ['updatedAt'],
-      order: [['updatedAt', 'DESC']],
-      limit: 1,
+      orderBy: { updatedAt: 'desc' },
     });
   }
 }

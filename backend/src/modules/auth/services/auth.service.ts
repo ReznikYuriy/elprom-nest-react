@@ -2,7 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { compare } from 'bcryptjs';
 import configs from '../../../configs';
-import UserModel from '../../../modules/user/model/user.schema';
+import { User } from '@prisma/client';
 import { UserService } from '../../../modules/user/services/user.service';
 import { RolesEnum } from 'src/modules/user/enums/user.role';
 
@@ -13,7 +13,7 @@ export class AuthService {
     private jwtService: JwtService,
   ) {}
 
-  async login(user: UserModel) {
+  async login(user: User) {
     const payload = {
       name: user.name,
       email: user.email,
@@ -29,7 +29,7 @@ export class AuthService {
     return 'handlerLogin';
   }
 
-  async googleLogin(user: UserModel) {
+  async googleLogin(user: User) {
     let dbUser = await this.usersService.findOneByEmail(user?.email);
     if (!dbUser) {
       dbUser = await this.usersService.createUser({

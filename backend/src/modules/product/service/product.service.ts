@@ -3,7 +3,7 @@ import { CreateProductDto } from '../dto/create.product.dto';
 import { UpdateProductDto } from '../dto/update.product.dto';
 import ProductRepository from '../repositories/product.repository';
 import { CategoryService } from 'src/modules/category/service/category.service';
-import ProductModel from '../model/product.model';
+import { Prisma, Product as ProductModel } from '@prisma/client';
 import * as xmlbuilder from 'xmlbuilder';
 import { createReadStream, existsSync, mkdirSync, writeFile } from 'fs';
 import { externalFilesConfig } from '../configs/files.config';
@@ -16,7 +16,7 @@ export class ProductService {
     private readonly categoryService: CategoryService,
   ) {}
 
-  async create(dto: CreateProductDto) {
+  async create(dto: Prisma.ProductCreateInput) {
     return this.productRepo.create(dto);
   }
 
@@ -36,7 +36,7 @@ export class ProductService {
     return this.productRepo.findAllByCategoryId(category_id);
   }
 
-  async update(id: string, dto: UpdateProductDto) {
+  async update(id: string, dto: Prisma.ProductUpdateInput) {
     return this.productRepo.update(id, dto);
   }
 
@@ -53,9 +53,9 @@ export class ProductService {
   }
 
   async getWarehouseUpdDate(): Promise<string> {
-    const products = await this.productRepo.getWarehouseUpdDate();
-    if (products?.length > 0) {
-      return this.dateToString(products[0].updatedAt);
+    const product = await this.productRepo.getWarehouseUpdDate();
+    if (product) {
+      return this.dateToString(product?.updatedAt.toDateString());
     } else {
       return this.dateToString(new Date());
     }

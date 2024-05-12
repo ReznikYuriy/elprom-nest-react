@@ -1,59 +1,50 @@
 import { Injectable } from '@nestjs/common';
-import { InjectModel } from '@nestjs/sequelize';
-import CategoryModel from '../model/category.model';
 import { CreateCategoryDto } from '../dto/create.category.dto';
 import { UpdateCategoryDto } from '../dto/update.category.dto';
-import ProductModel from 'src/modules/product/model/product.model';
-import { Op } from 'sequelize';
+import { Category as CategoryModel, Prisma } from '@prisma/client';
+import { PrismaService } from 'src/modules/prisma/prisma.service';
 
 @Injectable()
 export default class CategoryRepository {
-  constructor(
-    @InjectModel(CategoryModel)
-    private readonly categorySchema: typeof CategoryModel,
-  ) {}
+  constructor(private readonly prisma: PrismaService) {}
 
-  async create(dto: CreateCategoryDto): Promise<CategoryModel> {
-    return this.categorySchema.create(dto);
+  async create(data: Prisma.CategoryCreateInput): Promise<CategoryModel> {
+    return this.prisma.category.create({ data });
   }
 
-  async findAll(): Promise<CategoryModel[]> {
-    return this.categorySchema.findAll({
-      attributes: ['id', 'name'],
-      order: [['name', 'ASC']],
+  async findAll(): Promise<Partial<CategoryModel>[]> {
+    return this.prisma.category.findMany({
+      select: { id: true, name: true },
+      orderBy: { name: 'asc' },
     });
   }
 
   async findAllNonZeroBalances(): Promise<CategoryModel[]> {
-    return this.categorySchema.findAll({
-      attributes: ['id', 'name'],
-      order: [['name', 'ASC']],
-      include: [
-        {
-          model: ProductModel,
-          required: true,
+    return this.prisma.category.findMany({
+      orderBy: { name: 'asc' },
+      include: {
+        products: {
           where: {
-            quantity: { [Op.gt]: 0 },
+            quantity: { gt: 0 },
           },
-          attributes: [],
         },
-      ],
+      },
     });
   }
 
   async findById(id: string): Promise<CategoryModel> {
-    return this.categorySchema.findByPk(id);
+    return this.prisma.category.findUnique({ where: { id } });
   }
 
   async update(id: string, data: UpdateCategoryDto): Promise<CategoryModel> {
-    const [, [updReq]] = await this.categorySchema.update(
-      { ...data },
-      { where: { id }, returning: true },
-    );
-    return updReq;
+    const cat = await this.prisma.category.update({
+      where: { id },
+      data: { ...data },
+    });
+    return cat;
   }
 
   async delete(id: string) {
-    return this.categorySchema.destroy({ where: { id } });
+    return this.prisma.category.delete({ where: { id } });
   }
 }

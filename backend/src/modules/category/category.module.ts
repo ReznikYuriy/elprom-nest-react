@@ -1,12 +1,11 @@
 import { Module } from '@nestjs/common';
 import { CategoryService } from './service/category.service';
 import { CategoryController } from './category.controller';
-import CategoryModel from './model/category.model';
-import { SequelizeModule } from '@nestjs/sequelize';
 import CategoryRepository from './repositories/category.repository';
+import { PrismaModule } from '../prisma/prisma.module';
 
 @Module({
-  imports: [SequelizeModule.forFeature([CategoryModel])],
+  imports: [PrismaModule],
   controllers: [CategoryController],
   providers: [CategoryService, CategoryRepository],
   exports: [CategoryService],

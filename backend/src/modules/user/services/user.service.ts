@@ -4,7 +4,7 @@ import CreateUserDto from '../dto/create.user.dto';
 import UsersRepository from '../repositories/users.repository';
 import { hashSync } from 'bcryptjs';
 import { RolesEnum } from '../enums/user.role';
-import User from '../model/user.schema';
+import { User } from '@prisma/client';
 
 @Injectable()
 export class UserService implements OnModuleInit {

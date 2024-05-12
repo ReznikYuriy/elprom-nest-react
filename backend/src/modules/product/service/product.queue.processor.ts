@@ -9,7 +9,7 @@ import {
 import { Injectable, Logger } from '@nestjs/common';
 import { Job, Queue } from 'bull';
 import { ProductService } from './product.service';
-import ProductModel from '../model/product.model';
+import { Product as ProductModel } from '@prisma/client';
 import { XLSService } from './xls.service';
 import productIdCreator from '../helper/create.id';
 
@@ -64,6 +64,7 @@ export class ProductQueueProcessor {
             job.data.productBody.name,
             job.data.productBody.product_id_1C,
           ),
+          category: { connect: { id: dto.category_id } },
         });
       } else if (!this.productService.compareProducts(dto, prodInDb)) {
         await this.productService.update(prodInDb.id, dto);

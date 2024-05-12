@@ -1,34 +1,32 @@
 import { Injectable } from '@nestjs/common';
-import { InjectModel } from '@nestjs/sequelize';
 import { RolesEnum } from '../enums/user.role';
-import UserModel from '../model/user.schema';
+import { User as UserModel } from '@prisma/client';
 import CreateUserDto from '../dto/create.user.dto';
+import { PrismaService } from 'src/modules/prisma/prisma.service';
 
 @Injectable()
 export default class UsersRepository {
-  constructor(
-    @InjectModel(UserModel) private readonly userSchema: typeof UserModel,
-  ) {}
+  constructor(private readonly prisma: PrismaService) {}
 
   async findById(id: number): Promise<UserModel> {
-    return await this.userSchema.findOne({
+    return await this.prisma.user.findUnique({
       where: { id },
     });
   }
 
   async create(data: CreateUserDto): Promise<UserModel> {
-    const user = await this.userSchema.create(data);
+    const user = await this.prisma.user.create({ data });
     return user;
   }
 
   async findAllAdmins(): Promise<UserModel[]> {
-    return this.userSchema.findAll({
+    return this.prisma.user.findMany({
       where: { role: RolesEnum.ADMIN },
     });
   }
 
   async findOneByEmail(email: string): Promise<UserModel> {
-    return this.userSchema.findOne({
+    return this.prisma.user.findFirst({
       where: { email },
     });
   }
