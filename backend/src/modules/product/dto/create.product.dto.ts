@@ -62,5 +62,5 @@ export class CreateProductDto {
     type: [DiscountInterface],
   })
   @IsArray()
-  discounts?: DiscountInterface[];
+  discounts: DiscountInterface[];
 }

@@ -1,12 +1,12 @@
 import { Injectable, Logger, StreamableFile } from '@nestjs/common';
 import { CreateProductDto } from '../dto/create.product.dto';
-import { UpdateProductDto } from '../dto/update.product.dto';
 import ProductRepository from '../repositories/product.repository';
 import { CategoryService } from 'src/modules/category/service/category.service';
 import { Prisma, Product as ProductModel } from '@prisma/client';
 import * as xmlbuilder from 'xmlbuilder';
 import { createReadStream, existsSync, mkdirSync, writeFile } from 'fs';
 import { externalFilesConfig } from '../configs/files.config';
+import { transformDiscountsToJson } from './helper';
 
 @Injectable()
 export class ProductService {
@@ -16,8 +16,14 @@ export class ProductService {
     private readonly categoryService: CategoryService,
   ) {}
 
-  async create(dto: Prisma.ProductCreateInput) {
-    return this.productRepo.create(dto);
+  async create(dto: CreateProductDto) {
+    const { category_id, ...data } = dto; //tranformDto=
+    const transformedDto: Prisma.ProductCreateInput = {
+      ...data,
+      category: { connect: { id: category_id } },
+      discounts: transformDiscountsToJson(dto.discounts) || [],
+    };
+    return this.productRepo.create(transformedDto);
   }
 
   async findAll() {

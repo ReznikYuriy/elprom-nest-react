@@ -13,4 +13,5 @@ export default class DiscountInterface {
   })
   @IsInt()
   percent: number;
+  //[key: string]: number;
 }

@@ -21,14 +21,22 @@ export default class CategoryRepository {
 
   async findAllNonZeroBalances(): Promise<CategoryModel[]> {
     return this.prisma.category.findMany({
-      orderBy: { name: 'asc' },
+      /* orderBy: { name: 'asc' },
       include: {
         products: {
           where: {
             quantity: { gt: 0 },
           },
         },
+      }, */
+      where: {
+        products: {
+          some: {
+            quantity: { gt: 0 },
+          },
+        },
       },
+      orderBy: { name: 'asc' },
     });
   }
 

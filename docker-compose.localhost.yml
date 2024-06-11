@@ -86,40 +86,22 @@ services:
     networks:
       - el-prom-network
 
+  
   nginx:
-        build:
-          context: ./nginx-le
-          dockerfile: Dockerfile
-        image: umputun/nginx-le:latest
-        hostname: nginx
-        restart: always
-        container_name: nginx
-
-        logging:
-          driver: json-file
-          options:
-              max-size: "10m"
-              max-file: "5"
-
-        volumes:
-            - ./nginx-le/etc/ssl:/etc/nginx/ssl
-            - ./nginx-le/etc/nginx.conf:/etc/nginx/service.conf
-        ports:
+      image: nginx:stable-alpine
+      container_name: nginx
+      ports:
             - 80:80
             - 443:443
-
-        environment:
-            - TZ=UTC
-            - LETSENCRYPT=true
-            - LE_EMAIL=mail@el-prom.com.ua
-            - LE_FQDN=www.el-prom.com.ua,el-prom.com.ua
-        depends_on:
+      volumes:
+        - ./nginx/nginx.conf.prod:/etc/nginx/conf.d/nginx.conf
+        - ./nginx/ssl_certs:/etc/nginx/ssl_certs
+      depends_on:
           - frontend
           - nestjs-api
           - pgadmin
-        networks:
+      networks:
           - el-prom-network
-
 networks:
   el-prom-network:
     driver: bridge

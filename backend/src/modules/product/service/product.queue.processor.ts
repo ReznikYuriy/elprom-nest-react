@@ -12,6 +12,7 @@ import { ProductService } from './product.service';
 import { Product as ProductModel } from '@prisma/client';
 import { XLSService } from './xls.service';
 import productIdCreator from '../helper/create.id';
+import { transformToDiscountInterface } from './helper';
 
 @Injectable()
 @Processor('product-queue')
@@ -51,25 +52,26 @@ export class ProductQueueProcessor {
   @Process('upd-products-from-xlsx')
   async updProductsFromXlsx(job: Job<{ productBody: ProductModel }>) {
     this.logger.log(`Processor:@Process - Update Db from XLSX file.`);
+
     const dto = {
       ...job.data.productBody,
-      discounts: [],
+      discounts: transformToDiscountInterface(job.data.productBody.discounts),
     };
-    const { category_id, ..._dto } = dto;
+    //const { category_id, ..._dto } = dto;
     try {
       const prodInDb = await this.productService.getById1c(dto.product_id_1C);
       if (!prodInDb) {
         await this.productService.create({
-          ..._dto,
+          ...dto,
           id: productIdCreator(
             job.data.productBody.name,
             +job.data.productBody.product_id_1C,
           ),
-          discounts: [],
-          category: { connect: { id: category_id } },
+          //discounts: [],
+          //category: { connect: { id: category_id } }, */
         });
       } else if (!this.productService.compareProducts(dto, prodInDb)) {
-        await this.productService.update(prodInDb.id, dto);
+        await this.productService.update(prodInDb.id, job.data.productBody);
         this.logger.verbose(dto);
       }
       const queue_count = await this.queue.count();

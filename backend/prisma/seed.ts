@@ -140,23 +140,26 @@ const main = async () => {
       name: 'Электрооборудование',
     },
   ];
-  for (const s of categories) {
-    await prisma.category.upsert({
-      where: { id: s.id },
-      update: {},
-      create: {
-        id: s.id,
-        name: s.name,
-      },
-    });
+  const categoryCount = await prisma.category.count();
+  if (categoryCount === 0) {
+    for (const s of categories) {
+      await prisma.category.upsert({
+        where: { id: s.id },
+        update: {},
+        create: {
+          id: s.id,
+          name: s.name,
+        },
+      });
+    }
   }
 };
 main()
-  .then(async () => {
-    await prisma.$disconnect();
-  })
   .catch(async (e) => {
     console.error(e);
     await prisma.$disconnect();
     process.exit(1);
+  })
+  .finally(async () => {
+    await prisma.$disconnect();
   });

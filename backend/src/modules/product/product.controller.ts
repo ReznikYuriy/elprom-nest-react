@@ -29,7 +29,7 @@ export class ProductController {
   @UseGuards(JwtAuthGuard, RoleGuard)
   @Roles(RolesEnum.ADMIN)
   @Post()
-  async create(@Body() createProductDto: Prisma.ProductCreateInput) {
+  async create(@Body() createProductDto: CreateProductDto) {
     return this.productService.create(createProductDto);
   }
 
